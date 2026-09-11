@@ -29,6 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/bookings', [\App\Http\Controllers\UserBookingController::class, 'store'])->name('user.bookings.store');
     Route::get('/bookings/my', [\App\Http\Controllers\UserBookingController::class, 'myBookings'])->name('user.bookings.my');
     Route::delete('/bookings/{booking}/cancel', [\App\Http\Controllers\UserBookingController::class, 'cancel'])->name('user.bookings.cancel');
+
+    // AJAX: Cek konflik jadwal kelas
+    Route::post('/bookings/check-schedule', [\App\Http\Controllers\UserBookingController::class, 'checkScheduleConflict'])->name('user.bookings.check-schedule');
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {

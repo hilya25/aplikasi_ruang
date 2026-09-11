@@ -3,100 +3,117 @@
         <h1 class="m-0"><i class="fas fa-users mr-2"></i> Kelola Kelas</h1>
     </x-slot>
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
+    <!-- Alert Success/Error -->
+    @if (session('success'))
+        <div class="callout callout-success">
+            <p><i class="fas fa-check-circle mr-1"></i> {{ session('success') }}</p>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="callout callout-danger">
+            <p><i class="fas fa-exclamation-circle mr-1"></i> {{ session('error') }}</p>
+        </div>
+    @endif
+
+    <!-- Tombol Tambah Kelas -->
+    <div class="mb-3">
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addClassModal">
+            <i class="fas fa-plus mr-1"></i> Tambah Kelas
+        </button>
+    </div>
+
+    <!-- Daftar Kelas per Angkatan -->
+    @forelse($gradeOrder as $grade)
+        @if(isset($groupedClasses[$grade]) && $groupedClasses[$grade]->count() > 0)
+            <div class="card card-outline card-{{ $grade === 'X' ? 'primary' : ($grade === 'XI' ? 'success' : ($grade === 'XII' ? 'warning' : 'secondary')) }}">
                 <div class="card-header">
-                    <h3 class="card-title">Daftar Kelas</h3>
+                    <h3 class="card-title">
+                        @if($grade === 'X') <i class="fas fa-graduation-cap mr-1 text-primary"></i>
+                        @elseif($grade === 'XI') <i class="fas fa-user-graduate mr-1 text-success"></i>
+                        @elseif($grade === 'XII') <i class="fas fa-medal mr-1 text-warning"></i>
+                        @else <i class="fas fa-users mr-1 text-secondary"></i>
+                        @endif
+                        <strong>Kelas {{ $grade }}</strong>
+                        <span class="badge badge-pill badge-{{ $grade === 'X' ? 'primary' : ($grade === 'XI' ? 'success' : ($grade === 'XII' ? 'warning' : 'secondary')) }} ml-2">
+                            {{ $groupedClasses[$grade]->count() }} Kelas
+                        </span>
+                    </h3>
                     <div class="card-tools">
-                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addClassModal">
-                            <i class="fas fa-plus mr-1"></i> Tambah Kelas
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-minus"></i>
                         </button>
                     </div>
                 </div>
-
-                <!-- Alert Success/Error -->
-                @if (session('success'))
-                    <div class="callout callout-success">
-                        <p><i class="fas fa-check-circle mr-1"></i> {{ session('success') }}</p>
-                    </div>
-                @endif
-
-                @if (session('error'))
-                    <div class="callout callout-danger">
-                        <p><i class="fas fa-exclamation-circle mr-1"></i> {{ session('error') }}</p>
-                    </div>
-                @endif
-
-                <div class="card-body table-responsive p-0">
-                    @if($classes->count() > 0)
-                        <table class="table table-hover text-nowrap">
-                            <thead>
-                                <tr>
-                                    <th style="width: 10px">#</th>
-                                    <th>Nama Kelas</th>
-                                    <th style="width: 150px">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($classes as $index => $class)
-                                <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td><strong>{{ $class->name }}</strong></td>
-                                    <td>
-                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editClassModal{{ $class->id }}">
-                                            <i class="fas fa-edit"></i>
+                <div class="card-body p-0">
+                    <table class="table table-hover table-striped mb-0">
+                        <thead class="thead-{{ $grade === 'X' ? 'light' : 'light' }}">
+                            <tr>
+                                <th style="width: 50px">#</th>
+                                <th>Nama Kelas</th>
+                                <th style="width: 150px">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($groupedClasses[$grade] as $index => $class)
+                            <tr>
+                                <td>{{ $index + 1 }}</td>
+                                <td><strong>{{ $class->name }}</strong></td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editClassModal{{ $class->id }}" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <form method="POST" action="{{ route('admin.classes.destroy', $class) }}" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus kelas {{ $class->name }}?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
+                                            <i class="fas fa-trash"></i>
                                         </button>
-                                        <form method="POST" action="{{ route('admin.classes.destroy', $class) }}" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus kelas ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
+                                    </form>
+                                </td>
+                            </tr>
 
-                                <!-- Modal Edit Kelas -->
-                                <div class="modal fade" id="editClassModal{{ $class->id }}" tabindex="-1" role="dialog">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <form method="POST" action="{{ route('admin.classes.update', $class) }}">
-                                                @csrf
-                                                @method('PUT')
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Edit Kelas</h5>
-                                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                            <!-- Modal Edit Kelas -->
+                            <div class="modal fade" id="editClassModal{{ $class->id }}" tabindex="-1" role="dialog">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <form method="POST" action="{{ route('admin.classes.update', $class) }}">
+                                            @csrf
+                                            @method('PUT')
+                                            <div class="modal-header bg-primary text-white">
+                                                <h5 class="modal-title"><i class="fas fa-edit mr-1"></i> Edit: {{ $class->name }}</h5>
+                                                <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label>Nama Kelas <span class="text-danger">*</span></label>
+                                                    <input type="text" name="name" class="form-control" value="{{ $class->name }}" placeholder="Contoh: X PPLG A" required>
                                                 </div>
-                                                <div class="modal-body">
-                                                    <div class="form-group">
-                                                        <label>Nama Kelas <span class="text-danger">*</span></label>
-                                                        <input type="text" name="name" class="form-control" value="{{ $class->name }}" placeholder="Contoh: X PPLG A" required>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                                                    <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Simpan</button>
-                                                </div>
-                                            </form>
-                                        </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                <button type="submit" class="btn btn-primary"><i class="fas fa-save mr-1"></i> Simpan</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    @else
-                        <div class="text-center py-4">
-                            <p class="text-muted">
-                                <i class="fas fa-info-circle mr-1"></i>
-                                Belum ada kelas. Klik "Tambah Kelas" untuk menambahkan.
-                            </p>
-                        </div>
-                    @endif
+                            </div>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
+        @endif
+    @empty
+        <!-- Jika tidak ada kelas sama sekali -->
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-users fa-3x text-gray-300 mb-3"></i>
+                <h5 class="text-gray-500">Belum ada kelas</h5>
+                <p class="text-muted">Klik tombol "Tambah Kelas" untuk menambahkan kelas baru.</p>
+            </div>
         </div>
-    </div>
+    @endforelse
 
     <!-- Modal Tambah Kelas -->
     <div class="modal fade" id="addClassModal" tabindex="-1" role="dialog">
@@ -104,14 +121,22 @@
             <div class="modal-content">
                 <form method="POST" action="{{ route('admin.classes.store') }}">
                     @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title"><i class="fas fa-user-plus mr-1"></i> Tambah Kelas Baru</h5>
-                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title"><i class="fas fa-plus-circle mr-1"></i> Tambah Kelas Baru</h5>
+                        <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Nama Kelas <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control" placeholder="Contoh: X PPLG A" required>
+                        </div>
+                        <div class="callout callout-info">
+                            <p class="mb-0"><strong>Format penulisan:</strong></p>
+                            <ul class="mb-0 mt-1">
+                                <li><strong>X</strong> = Kelas 10 (contoh: X PPLG A)</li>
+                                <li><strong>XI</strong> = Kelas 11 (contoh: XI RPL A)</li>
+                                <li><strong>XII</strong> = Kelas 12 (contoh: XII TKJ A)</li>
+                            </ul>
                         </div>
                     </div>
                     <div class="modal-footer">

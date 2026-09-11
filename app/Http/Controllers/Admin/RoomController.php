@@ -9,12 +9,19 @@ use Illuminate\Http\Request;
 class RoomController extends Controller
 {
     /**
-     * Tampilkan daftar semua ruangan
+     * Tampilkan daftar semua ruangan (dikelompokkan berdasarkan jenis)
      */
     public function index()
     {
         $rooms = Room::latest()->get();
-        return view('admin.rooms.index', compact('rooms'));
+
+        // Kelompokkan ruangan berdasarkan jenis
+        $groupedRooms = $rooms->groupBy('type');
+
+        // Urutan jenis ruangan yang diinginkan
+        $typeOrder = ['Kelas', 'Lab', 'Aula', 'Lapangan', 'Masjid', 'Activity Room'];
+
+        return view('admin.rooms.index', compact('rooms', 'groupedRooms', 'typeOrder'));
     }
 
     /**

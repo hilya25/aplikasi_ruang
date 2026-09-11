@@ -57,8 +57,28 @@
                                     <label>Kelas</label>
                                     <select name="class_id" class="form-control">
                                         <option value="">-- Pilih Kelas --</option>
-                                        @foreach($classes as $class)
-                                            <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                        @php
+                                            $classesByGrade = $classes->groupBy(function ($class) {
+                                                $name = strtolower(trim($class->name));
+                                                if (preg_match('/^(xii|12)/', $name)) {
+                                                    return 'XII';
+                                                } elseif (preg_match('/^(xi|11)/', $name)) {
+                                                    return 'XI';
+                                                } elseif (preg_match('/^(x|10)/', $name)) {
+                                                    return 'X';
+                                                }
+                                                return 'Lainnya';
+                                            });
+                                            $gradeOrder = ['X', 'XI', 'XII', 'Lainnya'];
+                                        @endphp
+                                        @foreach($gradeOrder as $grade)
+                                            @if(isset($classesByGrade[$grade]) && $classesByGrade[$grade]->count() > 0)
+                                                <optgroup label="Kelas {{ $grade }}">
+                                                    @foreach($classesByGrade[$grade] as $class)
+                                                        <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                                    @endforeach
+                                                </optgroup>
+                                            @endif
                                         @endforeach
                                     </select>
                                     <small class="text-muted">Opsional untuk Lab/Aula/Lapangan</small>
@@ -218,7 +238,7 @@
             var type = selectedOption.getAttribute('data-type');
             var group = document.getElementById('bulk_class_group');
             var classSelect = group.querySelector('select');
-            var nonClassTypes = ['Lab', 'Aula', 'Lapangan', 'Masjid'];
+            var nonClassTypes = ['Lab', 'Aula', 'Lapangan', 'Masjid', 'Activity Room'];
 
             if (nonClassTypes.includes(type)) {
                 classSelect.removeAttribute('required');

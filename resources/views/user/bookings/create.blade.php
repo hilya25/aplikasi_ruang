@@ -29,13 +29,27 @@
                 @endif
 
                 @if (session('error'))
-                    <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl flex items-center">
-                        <div class="p-2 bg-red-100 rounded-full mr-3">
+                    <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl flex items-start">
+                        <div class="p-2 bg-red-100 rounded-full mr-3 mt-0.5">
                             <i class="fas fa-exclamation-circle text-red-600"></i>
                         </div>
-                        {{ session('error') }}
+                        <div class="flex-1">
+                            <p class="font-semibold text-red-800">Peringatan Konflik!</p>
+                            <div class="mt-1 text-sm text-red-600">{!! session('error') !!}</div>
+                        </div>
                     </div>
                 @endif
+
+                <!-- Alert Real-time Konflik Jadwal -->
+                <div id="scheduleConflictAlert" class="hidden mb-6 p-4 bg-orange-50 border border-orange-200 text-orange-700 rounded-xl flex items-start">
+                    <div class="p-2 bg-orange-100 rounded-full mr-3 mt-0.5">
+                        <i class="fas fa-exclamation-triangle text-orange-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="font-semibold text-orange-800">Jadwal Kelas Terdeteksi!</p>
+                        <div id="scheduleConflictMessage" class="mt-1 text-sm text-orange-600"></div>
+                    </div>
+                </div>
 
                 <form method="POST" action="{{ route('user.bookings.store') }}">
                     @csrf
@@ -149,4 +163,89 @@
             </div>
         </div>
     </div>
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const roomSelect = document.querySelector('select[name="room_id"]');
+    const startInput = document.querySelector('input[name="start_datetime"]');
+    const endInput = document.querySelector('input[name="end_datetime"]');
+    const submitBtn = document.querySelector('button[type="submit"]');
+    const conflictAlert = document.getElementById('scheduleConflictAlert');
+    const conflictMessage = document.getElementById('scheduleConflictMessage');
+
+    let checkTimeout = null;
+
+    // Fungsi untuk cek konflik jadwal kelas via AJAX
+    function checkScheduleConflict() {
+        const roomId = roomSelect.value;
+        const startDatetime = startInput.value;
+        const endDatetime = endInput.value;
+
+        // Validasi input lengkap
+        if (!roomId || !startDatetime || !endDatetime) {
+            conflictAlert.classList.add('hidden');
+            submitBtn.disabled = false;
+            return;
+        }
+
+        // Debounce - tunggu 500ms setelah user berhenti mengetik
+        clearTimeout(checkTimeout);
+        checkTimeout = setTimeout(() => {
+            fetch('{{ route("user.bookings.check-schedule") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    room_id: roomId,
+                    start_datetime: startDatetime,
+                    end_datetime: endDatetime,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.has_conflict) {
+                    // Tampilkan peringatan konflik
+                    conflictMessage.innerHTML = `
+                        <p class="mb-2">Waktu yang dipilih bentrok dengan jadwal kelas:</p>
+                        <ul class="list-disc list-inside space-y-1">
+                            <li><strong>Kelas:</strong> ${data.schedule.class_name}</li>
+                            <li><strong>Mata Pelajaran:</strong> ${data.schedule.subject || 'Tidak ada'}</li>
+                            <li><strong>Jam:</strong> ${data.schedule.start_time} - ${data.schedule.end_time}</li>
+                        </ul>
+                        <p class="mt-2 text-orange-800 font-medium">Silakan pilih waktu lain yang tidak berbenturan.</p>
+                    `;
+                    conflictAlert.classList.remove('hidden');
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    // Tidak ada konflik
+                    conflictAlert.classList.add('hidden');
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            })
+            .catch(error => {
+                console.error('Error checking schedule:', error);
+                conflictAlert.classList.add('hidden');
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            });
+        }, 500);
+    }
+
+    // Event listeners
+    roomSelect.addEventListener('change', checkScheduleConflict);
+    startInput.addEventListener('change', checkScheduleConflict);
+    endInput.addEventListener('change', checkScheduleConflict);
+
+    // Cek saat halaman dimuat jika ada value lama
+    if (roomSelect.value && startInput.value && endInput.value) {
+        checkScheduleConflict();
+    }
+});
+</script>
+@endpush
 </x-app-layout>

@@ -74,7 +74,7 @@ class UserController extends Controller
     }
 
     /**
-     * Daftar ruangan (katalog)
+     * Daftar ruangan (katalog) - dikelompokkan berdasarkan jenis
      */
     public function rooms()
     {
@@ -85,7 +85,13 @@ class UserController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('user.rooms', compact('rooms'));
+        // Kelompokkan berdasarkan jenis
+        $groupedRooms = $rooms->groupBy('type');
+
+        // Urutan jenis ruangan
+        $typeOrder = ['Kelas', 'Lab', 'Aula', 'Lapangan', 'Masjid', 'Activity Room'];
+
+        return view('user.rooms', compact('rooms', 'groupedRooms', 'typeOrder'));
     }
 
     /**

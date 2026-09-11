@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Room;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class UserBookingController extends Controller
 {
@@ -47,6 +49,45 @@ class UserBookingController extends Controller
         if ($conflict) {
             return back()->withInput()
                 ->with('error', 'Ruangan sudah terjadwal di waktu tersebut! Silakan pilih waktu lain.');
+        }
+
+        // Cek konflik dengan jadwal kelas
+        $startCarbon = Carbon::parse($request->start_datetime);
+        $endCarbon = Carbon::parse($request->end_datetime);
+
+        // Mapping hari dalam Bahasa Indonesia
+        $dayMapping = [
+            1 => 'Senin', 2 => 'Selasa', 3 => 'Rabu',
+            4 => 'Kamis', 5 => 'Jumat', 6 => 'Sabtu', 7 => 'Minggu',
+        ];
+        $dayOfWeek = $dayMapping[$startCarbon->dayOfWeek];
+
+        // Cari jadwal kelas yang aktif dan bentrok
+        $conflictingSchedule = Schedule::where('room_id', $request->room_id)
+            ->where('day_of_week', $dayOfWeek)
+            ->where('status', 'active')
+            ->where(function ($query) use ($request) {
+                // Cek overlap waktu: jadwal kelas dimulai SEBELUM booking selesai
+                // DAN jadwal kelas selesai SETELAH booking dimulai
+                $query->where(function ($q) use ($request) {
+                    $q->where('start_time', '<', substr($request->end_datetime, 11, 5))
+                      ->where('end_time', '>', substr($request->start_datetime, 11, 5));
+                });
+            })
+            ->with('classRoom')
+            ->first();
+
+        if ($conflictingSchedule) {
+            $className = $conflictingSchedule->classRoom ? $conflictingSchedule->classRoom->name : 'Tidak ada kelas';
+            $subject = $conflictingSchedule->subject ?? 'Tidak ada mata pelajaran';
+            $scheduleTime = $conflictingSchedule->start_time . ' - ' . $conflictingSchedule->end_time;
+
+            return back()->withInput()
+                ->with('error', "Waktu yang dipilih bentrok dengan jadwal kelas!
+                    <br><strong>Kelas:</strong> {$className}
+                    <br><strong>Mata Pelajaran:</strong> {$subject}
+                    <br><strong>Jam:</strong> {$scheduleTime}
+                    <br><br>Silakan pilih waktu lain yang tidak berbenturan dengan jadwal kelas.");
         }
 
         // Simpan booking
@@ -95,5 +136,60 @@ class UserBookingController extends Controller
         $booking->delete();
 
         return back()->with('success', 'Booking berhasil dibatalkan!');
+    }
+
+    /**
+     * AJAX: Cek konflik jadwal kelas secara real-time
+     */
+    public function checkScheduleConflict(Request $request)
+    {
+        $request->validate([
+            'room_id'        => 'required|exists:rooms,id',
+            'start_datetime' => 'required|date',
+            'end_datetime'   => 'required|date|after:start_datetime',
+        ]);
+
+        $startCarbon = Carbon::parse($request->start_datetime);
+        $endCarbon = Carbon::parse($request->end_datetime);
+
+        // Mapping hari dalam Bahasa Indonesia
+        $dayMapping = [
+            1 => 'Senin', 2 => 'Selasa', 3 => 'Rabu',
+            4 => 'Kamis', 5 => 'Jumat', 6 => 'Sabtu', 7 => 'Minggu',
+        ];
+        $dayOfWeek = $dayMapping[$startCarbon->dayOfWeek];
+
+        // Cari jadwal kelas yang aktif dan bentrok
+        $conflictingSchedule = Schedule::where('room_id', $request->room_id)
+            ->where('day_of_week', $dayOfWeek)
+            ->where('status', 'active')
+            ->where(function ($query) use ($request) {
+                $query->where(function ($q) use ($request) {
+                    $q->where('start_time', '<', substr($request->end_datetime, 11, 5))
+                      ->where('end_time', '>', substr($request->start_datetime, 11, 5));
+                });
+            })
+            ->with('classRoom')
+            ->first();
+
+        if ($conflictingSchedule) {
+            $className = $conflictingSchedule->classRoom ? $conflictingSchedule->classRoom->name : 'Tidak ada kelas';
+            $subject = $conflictingSchedule->subject ?? 'Tidak ada mata pelajaran';
+
+            return response()->json([
+                'has_conflict' => true,
+                'schedule' => [
+                    'class_name' => $className,
+                    'subject' => $subject,
+                    'start_time' => $conflictingSchedule->start_time,
+                    'end_time' => $conflictingSchedule->end_time,
+                    'day_of_week' => $dayOfWeek,
+                ],
+            ]);
+        }
+
+        return response()->json([
+            'has_conflict' => false,
+        ]);
     }
 }

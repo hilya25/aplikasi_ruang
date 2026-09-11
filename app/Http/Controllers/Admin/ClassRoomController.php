@@ -9,12 +9,38 @@ use Illuminate\Http\Request;
 class ClassRoomController extends Controller
 {
     /**
-     * Tampilkan daftar semua kelas
+     * Tampilkan daftar semua kelas (dikelompokkan berdasarkan angkatan)
      */
     public function index()
     {
         $classes = ClassRoom::orderBy('name')->get();
-        return view('admin.classes.index', compact('classes'));
+
+        // Kelompokkan kelas berdasarkan angkatan (X, XI, XII)
+        $groupedClasses = $classes->groupBy(function ($class) {
+            $name = strtolower(trim($class->name));
+
+            // Cek dengan regex untuk berbagai format
+            // Format: x-a rpl, xi-a rpl, xii-a rpl, 10-a rpl, dll
+            if (preg_match('/^(xii|12)/', $name)) {
+                return 'XII';
+            } elseif (preg_match('/^(xi|11)/', $name)) {
+                return 'XI';
+            } elseif (preg_match('/^(x|10)/', $name)) {
+                return 'X';
+            }
+
+            return 'Lainnya';
+        });
+
+        // Sort dalam setiap group agar lebih rapi
+        foreach ($groupedClasses as $grade => $gradeClasses) {
+            $groupedClasses[$grade] = $gradeClasses->sortBy('name');
+        }
+
+        // Urutan angkatan
+        $gradeOrder = ['X', 'XI', 'XII', 'Lainnya'];
+
+        return view('admin.classes.index', compact('classes', 'groupedClasses', 'gradeOrder'));
     }
 
     /**

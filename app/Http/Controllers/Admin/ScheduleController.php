@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class ScheduleController extends Controller
 {
     /**
-     * Tampilkan daftar semua jadwal (dikelompokkan per ruangan)
+     * Tampilkan daftar semua jadwal (dikelompokkan per jenis ruangan)
      */
     public function index()
     {
@@ -27,7 +27,13 @@ class ScheduleController extends Controller
 
         $classes = ClassRoom::orderBy('name')->get();
 
-        return view('admin.schedules.index', compact('rooms', 'classes'));
+        // Kelompokkan ruangan berdasarkan jenis
+        $groupedRooms = $rooms->groupBy('type');
+
+        // Urutan jenis ruangan
+        $typeOrder = ['Kelas', 'Lab', 'Aula', 'Lapangan', 'Masjid', 'Activity Room'];
+
+        return view('admin.schedules.index', compact('rooms', 'classes', 'groupedRooms', 'typeOrder'));
     }
 
     /**
