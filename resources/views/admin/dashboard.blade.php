@@ -6,7 +6,7 @@
     <!-- Welcome Banner -->
     <div class="row mb-4">
         <div class="col-12">
-            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 16px; overflow: hidden; position: relative;">
+            <div style="background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); border: none; border-radius: 16px; overflow: hidden; position: relative;">
                 <div class="card-body d-flex flex-wrap justify-content-between align-items-center" style="position: relative; z-index: 1;">
                     <div class="text-white">
                         <h4 class="mb-1 font-weight-bold">Selamat datang, {{ Auth::user()->name }}! 👋</h4>
@@ -30,9 +30,9 @@
 
     <!-- Stat Cards — Gradient Warna-warni -->
     <div class="row mb-4">
-        <!-- Total Users — Biru -->
+        <!-- Total Users — Indigo -->
         <div class="col-lg-3 col-6 mb-3">
-            <div style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-radius: 16px; color: white; box-shadow: 0 8px 20px rgba(59,130,246,0.3); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+            <div style="background: linear-gradient(135deg, #6366f1, #4f46e5); border-radius: 16px; color: white; box-shadow: 0 8px 20px rgba(99,102,241,0.3); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="d-flex align-items-center">
@@ -50,9 +50,9 @@
             </div>
         </div>
 
-        <!-- Total Ruangan — Hijau -->
+        <!-- Total Ruangan — Violet -->
         <div class="col-lg-3 col-6 mb-3">
-            <div style="background: linear-gradient(135deg, #22c55e, #16a34a); border-radius: 16px; color: white; box-shadow: 0 8px 20px rgba(34,197,94,0.3); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+            <div style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 16px; color: white; box-shadow: 0 8px 20px rgba(139,92,246,0.3); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="d-flex align-items-center">
@@ -70,9 +70,9 @@
             </div>
         </div>
 
-        <!-- Booking Pending — Kuning/Amber -->
+        <!-- Booking Pending — Blue -->
         <div class="col-lg-3 col-6 mb-3">
-            <div style="background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 16px; color: white; box-shadow: 0 8px 20px rgba(245,158,11,0.3); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+            <div style="background: linear-gradient(135deg, #3b82f6, #2563eb); border-radius: 16px; color: white; box-shadow: 0 8px 20px rgba(59,130,246,0.3); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="d-flex align-items-center">
@@ -90,9 +90,9 @@
             </div>
         </div>
 
-        <!-- Booking Hari Ini — Merah -->
+        <!-- Booking Hari Ini — Dark Indigo -->
         <div class="col-lg-3 col-6 mb-3">
-            <div style="background: linear-gradient(135deg, #ef4444, #dc2626); border-radius: 16px; color: white; box-shadow: 0 8px 20px rgba(239,68,68,0.3); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
+            <div style="background: linear-gradient(135deg, #312e81, #1e1b4b); border-radius: 16px; color: white; box-shadow: 0 8px 20px rgba(49,46,129,0.3); transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform='translateY(0)'">
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="d-flex align-items-center">
@@ -115,7 +115,7 @@
     <div class="row">
         <div class="col-12">
             <div style="background: white; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); overflow: hidden;">
-                <div style="padding: 1rem 1.5rem; background: linear-gradient(135deg, #f0f9ff, #ede9fe); border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between;">
+                <div style="padding: 1rem 1.5rem; background: linear-gradient(135deg, #eef2ff, #e0e7ff); border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between;">
                     <h3 class="card-title mb-0" style="font-weight: 700; font-size: 1.05rem; color: #1f2937;">
                         <i class="fas fa-history mr-1" style="color: #6366f1;"></i> Booking Terbaru
                     </h3>
@@ -144,7 +144,7 @@
                                     <br><small style="color: #9ca3af;">{{ $booking->user->email }}</small>
                                 </td>
                                 <td style="padding: 12px 16px;">
-                                    <span style="background: #ede9fe; color: #6d28d9; padding: 3px 10px; border-radius: 8px; font-size: 0.8rem; font-weight: 600;">{{ $booking->room->name }}</span>
+                                    <span style="background: #e0e7ff; color: #4338ca; padding: 3px 10px; border-radius: 8px; font-size: 0.8rem; font-weight: 600;">{{ $booking->room->name }}</span>
                                 </td>
                                 <td style="padding: 12px 16px; color: #6b7280; font-size: 0.9rem;">
                                     {{ \Carbon\Carbon::parse($booking->start_datetime)->format('d M Y, H:i') }}
@@ -164,8 +164,8 @@
                     </table>
                     @else
                         <div class="text-center py-5">
-                            <div style="width: 70px; height: 70px; background: linear-gradient(135deg, #ede9fe, #e0e7ff); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px;">
-                                <i class="fas fa-inbox" style="font-size: 1.5rem; color: #8b5cf6;"></i>
+                            <div style="width: 70px; height: 70px; background: linear-gradient(135deg, #e0e7ff, #c7d2fe); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+                                <i class="fas fa-inbox" style="font-size: 1.5rem; color: #6366f1;"></i>
                             </div>
                             <p style="color: #9ca3af; margin: 0;">Belum ada booking</p>
                         </div>

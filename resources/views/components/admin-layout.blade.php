@@ -20,21 +20,21 @@
 
     @livewireStyles
 </head>
-<body class="hold-transition sidebar-mini layout-fixed" style="background: linear-gradient(135deg, #f0f4ff 0%, #e8e0f4 100%); min-height: 100vh;">
+<body class="hold-transition sidebar-mini layout-fixed" style="background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%); min-height: 100vh;">
 <div class="wrapper">
 
     <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light" style="background: white; border-bottom: 1px solid #e5e7eb; box-shadow: 0 2px 10px rgba(100,70,186,0.08); padding: 0 1rem;">
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light" style="background: white; border-bottom: 1px solid #e5e7eb; box-shadow: 0 2px 10px rgba(79,70,229,0.08); padding: 0 1rem;">
         <!-- Left navbar links -->
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#" role="button" style="color: #6d28d9; font-size: 1.1rem;">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button" style="color: #6366f1; font-size: 1.1rem;">
                     <i class="fas fa-bars"></i>
                 </a>
             </li>
             <li class="nav-item d-none d-md-inline-block">
                 <a href="{{ route('admin.dashboard') }}" class="nav-link" style="color: #4b5563; font-weight: 600;">
-                    <i class="fas fa-home mr-1" style="color: #6d28d9;"></i> Dashboard
+                    <i class="fas fa-home mr-1" style="color: #6366f1;"></i> Dashboard
                 </a>
             </li>
             <li class="nav-item d-none d-md-inline-block">
@@ -81,7 +81,7 @@
             <!-- User Dropdown -->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle d-flex align-items-center" data-toggle="dropdown" href="#" style="color: #374151; font-weight: 600;">
-                    <div style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #6d28d9, #8b5cf6); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; margin-right: 8px;">
+                    <div style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #818cf8); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; margin-right: 8px;">
                         {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                     </div>
                     <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
@@ -92,7 +92,7 @@
                         <small style="color: #9ca3af;">{{ Auth::user()->email }}</small>
                     </div>
                     <a href="{{ route('profile.show') }}" class="dropdown-item" style="border-radius: 8px; padding: 8px 16px; color: #374151;">
-                        <i class="fas fa-user mr-2" style="color: #6d28d9;"></i> Profile
+                        <i class="fas fa-user mr-2" style="color: #6366f1;"></i> Profile
                     </a>
                     <a href="{{ route('dashboard') }}" class="dropdown-item" style="border-radius: 8px; padding: 8px 16px; color: #374151;">
                         <i class="fas fa-globe mr-2" style="color: #3b82f6;"></i> Lihat Website
@@ -110,7 +110,7 @@
     </nav>
 
     <!-- Sidebar -->
-    <aside class="main-sidebar elevation-4" style="background: linear-gradient(180deg, #4c1d95 0%, #6d28d9 50%, #7c3aed 100%);">
+    <aside class="main-sidebar elevation-4" style="background: linear-gradient(180deg, #312e81 0%, #4f46e5 50%, #818cf8 100%);">
         <!-- Sidebar -->
         <div class="sidebar" style="background: transparent;">
             <!-- User Panel -->
@@ -222,7 +222,7 @@
     </aside>
 
     <!-- Content Wrapper -->
-    <div class="content-wrapper" style="background: linear-gradient(135deg, #f0f4ff 0%, #ede4f7 100%);">
+    <div class="content-wrapper" style="background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);">
         <!-- Content Header (Page header) -->
         @if($header)
         <div class="content-header" style="background: transparent;">

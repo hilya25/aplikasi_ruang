@@ -42,23 +42,29 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                         @foreach($groupedRooms[$type] as $room)
                         <div class="bg-white overflow-hidden shadow-lg rounded-2xl hover:shadow-xl transition-shadow">
-                            <!-- Header Card with Color by Type -->
-                            <div class="h-28 flex items-center justify-center
-                                @if($room->type === 'Kelas') bg-gradient-to-br from-blue-500 to-indigo-600
-                                @elseif($room->type === 'Lab') bg-gradient-to-br from-purple-500 to-pink-600
-                                @elseif($room->type === 'Aula') bg-gradient-to-br from-orange-500 to-red-500
-                                @elseif($room->type === 'Lapangan') bg-gradient-to-br from-green-500 to-emerald-600
-                                @elseif($room->type === 'Masjid') bg-gradient-to-br from-teal-500 to-cyan-600
-                                @elseif($room->type === 'Activity Room') bg-gradient-to-br from-pink-500 to-rose-600
-                                @else bg-gradient-to-br from-gray-500 to-gray-600 @endif">
-                                <i class="fas @if($room->type === 'Kelas') fa-chalkboard-teacher
-                                         @elseif($room->type === 'Lab') fa-flask
-                                         @elseif($room->type === 'Aula') fa-building
-                                         @elseif($room->type === 'Lapangan') fa-futbol
-                                         @elseif($room->type === 'Masjid') fa-mosque
-                                         @elseif($room->type === 'Activity Room') fa-running
-                                         @else fa-door-open @endif text-white text-4xl opacity-90"></i>
-                            </div>
+                            <!-- Header Card with Image or Gradient by Type -->
+                            @if($room->image)
+                                <div class="h-48 overflow-hidden">
+                                    <img src="{{ asset('storage/' . $room->image) }}" alt="{{ $room->name }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                                </div>
+                            @else
+                                <div class="h-28 flex items-center justify-center
+                                    @if($room->type === 'Kelas') bg-gradient-to-br from-blue-500 to-indigo-600
+                                    @elseif($room->type === 'Lab') bg-gradient-to-br from-purple-500 to-pink-600
+                                    @elseif($room->type === 'Aula') bg-gradient-to-br from-orange-500 to-red-500
+                                    @elseif($room->type === 'Lapangan') bg-gradient-to-br from-green-500 to-emerald-600
+                                    @elseif($room->type === 'Masjid') bg-gradient-to-br from-teal-500 to-cyan-600
+                                    @elseif($room->type === 'Activity Room') bg-gradient-to-br from-pink-500 to-rose-600
+                                    @else bg-gradient-to-br from-gray-500 to-gray-600 @endif">
+                                    <i class="fas @if($room->type === 'Kelas') fa-chalkboard-teacher
+                                             @elseif($room->type === 'Lab') fa-flask
+                                             @elseif($room->type === 'Aula') fa-building
+                                             @elseif($room->type === 'Lapangan') fa-futbol
+                                             @elseif($room->type === 'Masjid') fa-mosque
+                                             @elseif($room->type === 'Activity Room') fa-running
+                                             @else fa-door-open @endif text-white text-4xl opacity-90"></i>
+                                </div>
+                            @endif
 
                             <!-- Body -->
                             <div class="p-5">
@@ -138,9 +144,15 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                         @foreach($typeRooms as $room)
                         <div class="bg-white overflow-hidden shadow-lg rounded-2xl hover:shadow-xl transition-shadow">
-                            <div class="h-28 flex items-center justify-center bg-gradient-to-br from-gray-500 to-gray-600">
-                                <i class="fas fa-door-open text-white text-4xl opacity-90"></i>
-                            </div>
+                            @if($room->image)
+                                <div class="h-48 overflow-hidden">
+                                    <img src="{{ asset('storage/' . $room->image) }}" alt="{{ $room->name }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                                </div>
+                            @else
+                                <div class="h-28 flex items-center justify-center bg-gradient-to-br from-gray-500 to-gray-600">
+                                    <i class="fas fa-door-open text-white text-4xl opacity-90"></i>
+                                </div>
+                            @endif
                             <div class="p-5">
                                 <div class="flex items-center justify-between mb-2">
                                     <h3 class="text-lg font-bold text-gray-800">{{ $room->name }}</h3>

@@ -52,6 +52,7 @@
                         <thead class="thead-light">
                             <tr>
                                 <th style="width: 50px">#</th>
+                                <th style="width: 50px">Gambar</th>
                                 <th>Nama Ruangan</th>
                                 <th>Kapasitas</th>
                                 <th>Lokasi</th>
@@ -64,6 +65,15 @@
                             @foreach($groupedRooms[$type] as $index => $room)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
+                                <td>
+                                    @if($room->image)
+                                        <img src="{{ asset('storage/' . $room->image) }}" alt="{{ $room->name }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;">
+                                    @else
+                                        <div style="width: 40px; height: 40px; border-radius: 8px; background: #e5e7eb; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-image text-gray-400"></i>
+                                        </div>
+                                    @endif
+                                </td>
                                 <td><strong>{{ $room->name }}</strong></td>
                                 <td>
                                     @if($room->capacity)
@@ -107,7 +117,7 @@
                             <div class="modal fade" id="editRoomModal{{ $room->id }}" tabindex="-1" role="dialog">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
-                                        <form method="POST" action="{{ route('admin.rooms.update', $room) }}">
+                                        <form method="POST" action="{{ route('admin.rooms.update', $room) }}" enctype="multipart/form-data">
                                             @csrf
                                             @method('PUT')
                                             <div class="modal-header bg-primary text-white">
@@ -115,6 +125,23 @@
                                                 <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
                                             </div>
                                             <div class="modal-body">
+                                                @if($room->image)
+                                                    <div class="form-group text-center">
+                                                        <label>Gambar Saat Ini</label><br>
+                                                        <img src="{{ asset('storage/' . $room->image) }}" alt="{{ $room->name }}" style="max-height: 150px; border-radius: 8px;">
+                                                    </div>
+                                                @endif
+                                                <div class="form-group">
+                                                    <label>Gambar Ruangan</label>
+                                                    <div class="custom-file">
+                                                        <input type="file" name="image" class="custom-file-input" id="editRoomImage{{ $room->id }}" accept="image/*" onchange="previewEditImage(this, 'editImagePreview{{ $room->id }}')">
+                                                        <label class="custom-file-label" for="editRoomImage{{ $room->id }}">Ganti gambar...</label>
+                                                    </div>
+                                                    <small class="text-muted">Kosongkan jika tidak ingin mengganti. Format: JPG, PNG, WebP. Maks 2MB.</small>
+                                                    <div class="mt-2 text-center">
+                                                        <img id="editImagePreview{{ $room->id }}" src="#" alt="Preview" style="max-height: 150px; border-radius: 8px; display: none;">
+                                                    </div>
+                                                </div>
                                                 <div class="form-group">
                                                     <label>Nama Ruangan <span class="text-danger">*</span></label>
                                                     <input type="text" name="name" class="form-control" value="{{ $room->name }}" required>
@@ -193,6 +220,7 @@
                             <thead class="thead-light">
                                 <tr>
                                     <th style="width: 50px">#</th>
+                                    <th style="width: 50px">Gambar</th>
                                     <th>Nama Ruangan</th>
                                     <th>Kapasitas</th>
                                     <th>Lokasi</th>
@@ -205,6 +233,15 @@
                                 @foreach($typeRooms as $index => $room)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
+                                    <td>
+                                        @if($room->image)
+                                            <img src="{{ asset('storage/' . $room->image) }}" alt="{{ $room->name }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;">
+                                        @else
+                                            <div style="width: 40px; height: 40px; border-radius: 8px; background: #e5e7eb; display: flex; align-items: center; justify-content: center;">
+                                                <i class="fas fa-image text-gray-400"></i>
+                                            </div>
+                                        @endif
+                                    </td>
                                     <td><strong>{{ $room->name }}</strong></td>
                                     <td>
                                         @if($room->capacity)
@@ -248,7 +285,7 @@
                                 <div class="modal fade" id="editRoomModal{{ $room->id }}" tabindex="-1" role="dialog">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
-                                            <form method="POST" action="{{ route('admin.rooms.update', $room) }}">
+                                            <form method="POST" action="{{ route('admin.rooms.update', $room) }}" enctype="multipart/form-data">
                                                 @csrf
                                                 @method('PUT')
                                                 <div class="modal-header bg-secondary text-white">
@@ -256,6 +293,23 @@
                                                     <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span></button>
                                                 </div>
                                                 <div class="modal-body">
+                                                    @if($room->image)
+                                                        <div class="form-group text-center">
+                                                            <label>Gambar Saat Ini</label><br>
+                                                            <img src="{{ asset('storage/' . $room->image) }}" alt="{{ $room->name }}" style="max-height: 150px; border-radius: 8px;">
+                                                        </div>
+                                                    @endif
+                                                    <div class="form-group">
+                                                        <label>Gambar Ruangan</label>
+                                                        <div class="custom-file">
+                                                            <input type="file" name="image" class="custom-file-input" id="editRoomImageLainnya{{ $room->id }}" accept="image/*" onchange="previewEditImage(this, 'editImagePreviewLainnya{{ $room->id }}')">
+                                                            <label class="custom-file-label" for="editRoomImageLainnya{{ $room->id }}">Ganti gambar...</label>
+                                                        </div>
+                                                        <small class="text-muted">Kosongkan jika tidak ingin mengganti.</small>
+                                                        <div class="mt-2 text-center">
+                                                            <img id="editImagePreviewLainnya{{ $room->id }}" src="#" alt="Preview" style="max-height: 150px; border-radius: 8px; display: none;">
+                                                        </div>
+                                                    </div>
                                                     <div class="form-group">
                                                         <label>Nama Ruangan <span class="text-danger">*</span></label>
                                                         <input type="text" name="name" class="form-control" value="{{ $room->name }}" required>
@@ -298,7 +352,7 @@
     <div class="modal fade" id="addRoomModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form method="POST" action="{{ route('admin.rooms.store') }}">
+                <form method="POST" action="{{ route('admin.rooms.store') }}" enctype="multipart/form-data">
                     @csrf
                     <div class="modal-header bg-success text-white">
                         <h5 class="modal-title"><i class="fas fa-plus-circle mr-1"></i> Tambah Ruangan Baru</h5>
@@ -308,6 +362,17 @@
                         <div class="form-group">
                             <label>Nama Ruangan <span class="text-danger">*</span></label>
                             <input type="text" name="name" class="form-control" placeholder="Contoh: Ruang 10A" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Gambar Ruangan</label>
+                            <div class="custom-file">
+                                <input type="file" name="image" class="custom-file-input" id="addRoomImage" accept="image/*" onchange="previewAddImage(this)">
+                                <label class="custom-file-label" for="addRoomImage">Pilih gambar...</label>
+                            </div>
+                            <small class="text-muted">Format: JPG, PNG, WebP. Maks 2MB.</small>
+                            <div class="mt-2 text-center">
+                                <img id="addImagePreview" src="#" alt="Preview" style="max-height: 150px; border-radius: 8px; display: none;">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label>Jenis <span class="text-danger">*</span></label>
@@ -342,5 +407,43 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        function previewAddImage(input) {
+            var preview = document.getElementById('addImagePreview');
+            var label = input.nextElementSibling;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+                label.innerText = input.files[0].name;
+            } else {
+                preview.style.display = 'none';
+                label.innerText = 'Pilih gambar...';
+            }
+        }
+
+        function previewEditImage(input, previewId) {
+            var preview = document.getElementById(previewId);
+            var label = input.nextElementSibling;
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(input.files[0]);
+                label.innerText = input.files[0].name;
+            } else {
+                preview.style.display = 'none';
+                label.innerText = 'Ganti gambar...';
+            }
+        }
+    </script>
+    @endpush
 
 </x-admin-layout>

@@ -108,7 +108,7 @@
     <!-- Riwayat Login -->
     <div class="card" style="border-radius: 12px;">
         <div class="card-header border-0" style="background: transparent;">
-            <h3 class="card-title mb-0"><i class="fas fa-history mr-1" style="color: #667eea;"></i> Login Terakhir (10 user)</h3>
+            <h3 class="card-title mb-0"><i class="fas fa-history mr-1" style="color: #6366f1;"></i> Login Terakhir (10 user)</h3>
         </div>
         <div class="card-body p-0">
             @if($recentlyLoggedIn->count() > 0)
