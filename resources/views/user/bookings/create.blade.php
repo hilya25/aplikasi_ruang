@@ -1,165 +1,193 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            <i class="fas fa-calendar-plus mr-1"></i> Buat Booking Ruangan
-        </h2>
+        <div>
+            <p class="text-indigo-200 text-sm font-medium mb-1 flex items-center">
+                <i class="fas fa-file-signature mr-1.5"></i> Booking Ruangan
+            </p>
+            <h2 class="font-bold text-2xl text-white leading-tight flex items-center">
+                <span class="w-10 h-10 rounded-xl inline-flex items-center justify-center mr-3 text-lg"
+                      style="background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3); box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);">
+                    <i class="fas fa-calendar-plus"></i>
+                </span>
+                Ajukan Peminjaman
+            </h2>
+        </div>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-10">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-lg rounded-2xl p-8">
+            <div class="aesthetic-card overflow-hidden animate-fade-up">
 
                 <!-- Header Form -->
-                <div class="text-center mb-8">
-                    <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full mb-4">
+                <div class="p-8 text-center" style="background: linear-gradient(120deg, #eef2ff, #f5f3ff);">
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-3 shadow-lg"
+                         style="background: linear-gradient(135deg, #6366f1, #8b5cf6); box-shadow: 0 10px 30px -8px rgba(99,102,241,0.5);">
                         <i class="fas fa-calendar-plus text-white text-2xl"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-800">Form Booking Ruangan</h3>
                     <p class="text-gray-500 mt-1">Isi form di bawah untuk mengajukan peminjaman</p>
                 </div>
 
-                <!-- Alert Success/Error -->
-                @if (session('success'))
-                    <div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-xl flex items-center">
-                        <div class="p-2 bg-green-100 rounded-full mr-3">
-                            <i class="fas fa-check-circle text-green-600"></i>
+                <div class="p-8">
+                    <!-- Alert Success/Error -->
+                    @if (session('success'))
+                        <div class="mb-6 p-4 rounded-2xl flex items-center" style="background: linear-gradient(135deg, #ecfdf5, #d1fae5); border: 1px solid #a7f3d0;">
+                            <div class="p-2.5 rounded-xl mr-3" style="background: rgba(255,255,255,0.7);">
+                                <i class="fas fa-check-circle text-emerald-600"></i>
+                            </div>
+                            <p class="text-emerald-800 font-medium">{{ session('success') }}</p>
                         </div>
-                        {{ session('success') }}
-                    </div>
-                @endif
+                    @endif
 
-                @if (session('error'))
-                    <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-xl flex items-start">
-                        <div class="p-2 bg-red-100 rounded-full mr-3 mt-0.5">
-                            <i class="fas fa-exclamation-circle text-red-600"></i>
+                    @if (session('error'))
+                        <div class="mb-6 p-4 rounded-2xl flex items-start" style="background: linear-gradient(135deg, #fef2f2, #fee2e2); border: 1px solid #fecaca;">
+                            <div class="p-2.5 rounded-xl mr-3 mt-0.5" style="background: rgba(255,255,255,0.7);">
+                                <i class="fas fa-exclamation-circle text-red-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="font-semibold text-red-800">Peringatan Konflik!</p>
+                                <div class="mt-1 text-sm text-red-600">{!! session('error') !!}</div>
+                            </div>
+                        </div>
+                    @endif
+
+                    <!-- Alert Real-time Konflik Jadwal -->
+                    <div id="scheduleConflictAlert" class="hidden mb-6 p-4 rounded-2xl flex items-start" style="background: linear-gradient(135deg, #fffbeb, #fef3c7); border: 1px solid #fde68a;">
+                        <div class="p-2.5 rounded-xl mr-3 mt-0.5" style="background: rgba(255,255,255,0.7);">
+                            <i class="fas fa-exclamation-triangle text-amber-600"></i>
                         </div>
                         <div class="flex-1">
-                            <p class="font-semibold text-red-800">Peringatan Konflik!</p>
-                            <div class="mt-1 text-sm text-red-600">{!! session('error') !!}</div>
+                            <p class="font-semibold text-amber-800">Jadwal Kelas Terdeteksi!</p>
+                            <div id="scheduleConflictMessage" class="mt-1 text-sm text-amber-700"></div>
                         </div>
                     </div>
-                @endif
 
-                <!-- Alert Real-time Konflik Jadwal -->
-                <div id="scheduleConflictAlert" class="hidden mb-6 p-4 bg-orange-50 border border-orange-200 text-orange-700 rounded-xl flex items-start">
-                    <div class="p-2 bg-orange-100 rounded-full mr-3 mt-0.5">
-                        <i class="fas fa-exclamation-triangle text-orange-600"></i>
-                    </div>
-                    <div class="flex-1">
-                        <p class="font-semibold text-orange-800">Jadwal Kelas Terdeteksi!</p>
-                        <div id="scheduleConflictMessage" class="mt-1 text-sm text-orange-600"></div>
-                    </div>
-                </div>
+                    <form method="POST" action="{{ route('user.bookings.store') }}">
+                        @csrf
 
-                <form method="POST" action="{{ route('user.bookings.store') }}">
-                    @csrf
-
-                    <!-- Ruangan -->
-                    <div class="mb-5">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                            <i class="fas fa-door-open mr-1 text-indigo-500"></i> Ruangan <span class="text-red-500">*</span>
-                        </label>
-                        <select name="room_id" class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3" required>
-                            <option value="">-- Pilih Ruangan --</option>
-                            @foreach($rooms as $room)
-                                <option value="{{ $room->id }}" {{ old('room_id') == $room->id ? 'selected' : '' }}>
-                                    {{ $room->name }} ({{ $room->type }})
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('room_id')
-                            <p class="mt-2 text-sm text-red-600 flex items-center">
-                                <i class="fas fa-exclamation-triangle mr-1"></i> {{ $message }}
-                            </p>
-                        @enderror
-                    </div>
-
-                    <!-- Jenis Acara -->
-                    <div class="mb-5">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                            <i class="fas fa-tag mr-1 text-purple-500"></i> Jenis Acara <span class="text-red-500">*</span>
-                        </label>
-                        <select name="event_type" class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3" required>
-                            <option value="">-- Pilih Jenis --</option>
-                            <option value="Pinjam" {{ old('event_type') === 'Pinjam' ? 'selected' : '' }}>📌 Pinjam</option>
-                            <option value="Acara Sekolah" {{ old('event_type') === 'Acara Sekolah' ? 'selected' : '' }}>🎉 Acara Sekolah</option>
-                            <option value="Dikosongkan" {{ old('event_type') === 'Dikosongkan' ? 'selected' : '' }}>🔧 Dikosongkan (Magang)</option>
-                        </select>
-                        @error('event_type')
-                            <p class="mt-2 text-sm text-red-600 flex items-center">
-                                <i class="fas fa-exclamation-triangle mr-1"></i> {{ $message }}
-                            </p>
-                        @enderror
-                    </div>
-
-                    <!-- Kegiatan -->
-                    <div class="mb-5">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">
-                            <i class="fas fa-align-left mr-1 text-blue-500"></i> Kegiatan
-                        </label>
-                        <input type="text" name="description" class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3"
-                               value="{{ old('description') }}" placeholder="Contoh: Maulid Nabi, Praktek Komputer">
-                        @error('description')
-                            <p class="mt-2 text-sm text-red-600 flex items-center">
-                                <i class="fas fa-exclamation-triangle mr-1"></i> {{ $message }}
-                            </p>
-                        @enderror
-                    </div>
-
-                    <!-- Tanggal & Waktu -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                <i class="fas fa-clock mr-1 text-green-500"></i> Mulai <span class="text-red-500">*</span>
+                        <!-- Ruangan -->
+                        <div class="mb-5">
+                            <label class="block text-sm font-bold text-gray-700 mb-2 flex items-center">
+                                <span class="w-6 h-6 rounded-lg inline-flex items-center justify-center mr-2" style="background: linear-gradient(135deg, #eef2ff, #e0e7ff);">
+                                    <i class="fas fa-door-open text-indigo-500 text-xs"></i>
+                                </span>
+                                Ruangan <span class="text-red-500">*</span>
                             </label>
-                            <input type="datetime-local" name="start_datetime"
-                                   class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3"
-                                   value="{{ old('start_datetime') }}" required>
-                            @error('start_datetime')
+                            <select name="room_id" class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3" required>
+                                <option value="">-- Pilih Ruangan --</option>
+                                @foreach($rooms as $room)
+                                    <option value="{{ $room->id }}" {{ old('room_id') == $room->id ? 'selected' : '' }}>
+                                        {{ $room->name }} ({{ $room->type }})
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('room_id')
                                 <p class="mt-2 text-sm text-red-600 flex items-center">
-                                    <i class="fas fa-exclamation-triangle mr-1"></i> {{ $message }}
+                                    <i class="fas fa-exclamation-triangle mr-1.5"></i> {{ $message }}
                                 </p>
                             @enderror
                         </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2">
-                                <i class="fas fa-clock mr-1 text-red-500"></i> Selesai <span class="text-red-500">*</span>
+
+                        <!-- Jenis Acara -->
+                        <div class="mb-5">
+                            <label class="block text-sm font-bold text-gray-700 mb-2 flex items-center">
+                                <span class="w-6 h-6 rounded-lg inline-flex items-center justify-center mr-2" style="background: linear-gradient(135deg, #faf5ff, #f3e8ff);">
+                                    <i class="fas fa-tag text-purple-500 text-xs"></i>
+                                </span>
+                                Jenis Acara <span class="text-red-500">*</span>
                             </label>
-                            <input type="datetime-local" name="end_datetime"
-                                   class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3"
-                                   value="{{ old('end_datetime') }}" required>
-                            @error('end_datetime')
+                            <select name="event_type" class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3" required>
+                                <option value="">-- Pilih Jenis --</option>
+                                <option value="Pinjam" {{ old('event_type') === 'Pinjam' ? 'selected' : '' }}>📌 Pinjam</option>
+                                <option value="Acara Sekolah" {{ old('event_type') === 'Acara Sekolah' ? 'selected' : '' }}>🎉 Acara Sekolah</option>
+                                <option value="Dikosongkan" {{ old('event_type') === 'Dikosongkan' ? 'selected' : '' }}>🔧 Dikosongkan (Magang)</option>
+                            </select>
+                            @error('event_type')
                                 <p class="mt-2 text-sm text-red-600 flex items-center">
-                                    <i class="fas fa-exclamation-triangle mr-1"></i> {{ $message }}
+                                    <i class="fas fa-exclamation-triangle mr-1.5"></i> {{ $message }}
                                 </p>
                             @enderror
                         </div>
-                    </div>
 
-                    <!-- Info -->
-                    <div class="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl">
-                        <div class="flex items-start">
-                            <div class="p-2 bg-blue-100 rounded-full mr-3 mt-0.5">
-                                <i class="fas fa-info-circle text-blue-600"></i>
+                        <!-- Kegiatan -->
+                        <div class="mb-5">
+                            <label class="block text-sm font-bold text-gray-700 mb-2 flex items-center">
+                                <span class="w-6 h-6 rounded-lg inline-flex items-center justify-center mr-2" style="background: linear-gradient(135deg, #eff6ff, #dbeafe);">
+                                    <i class="fas fa-align-left text-blue-500 text-xs"></i>
+                                </span>
+                                Kegiatan
+                            </label>
+                            <input type="text" name="description" class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3"
+                                   value="{{ old('description') }}" placeholder="Contoh: Maulid Nabi, Praktek Komputer">
+                            @error('description')
+                                <p class="mt-2 text-sm text-red-600 flex items-center">
+                                    <i class="fas fa-exclamation-triangle mr-1.5"></i> {{ $message }}
+                                </p>
+                            @enderror
+                        </div>
+
+                        <!-- Tanggal & Waktu -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2 flex items-center">
+                                    <span class="w-6 h-6 rounded-lg inline-flex items-center justify-center mr-2" style="background: linear-gradient(135deg, #ecfdf5, #d1fae5);">
+                                        <i class="fas fa-clock text-emerald-500 text-xs"></i>
+                                    </span>
+                                    Mulai <span class="text-red-500">*</span>
+                                </label>
+                                <input type="datetime-local" name="start_datetime"
+                                       class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3"
+                                       value="{{ old('start_datetime') }}" required>
+                                @error('start_datetime')
+                                    <p class="mt-2 text-sm text-red-600 flex items-center">
+                                        <i class="fas fa-exclamation-triangle mr-1.5"></i> {{ $message }}
+                                    </p>
+                                @enderror
                             </div>
                             <div>
-                                <p class="text-sm text-blue-800 font-medium">Informasi</p>
-                                <p class="text-sm text-blue-600 mt-1">Booking akan dikirim ke admin untuk disetujui. Status booking bisa dilihat di halaman "Booking Saya".</p>
+                                <label class="block text-sm font-bold text-gray-700 mb-2 flex items-center">
+                                    <span class="w-6 h-6 rounded-lg inline-flex items-center justify-center mr-2" style="background: linear-gradient(135deg, #fef2f2, #fee2e2);">
+                                        <i class="fas fa-clock text-red-500 text-xs"></i>
+                                    </span>
+                                    Selesai <span class="text-red-500">*</span>
+                                </label>
+                                <input type="datetime-local" name="end_datetime"
+                                       class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3"
+                                       value="{{ old('end_datetime') }}" required>
+                                @error('end_datetime')
+                                    <p class="mt-2 text-sm text-red-600 flex items-center">
+                                        <i class="fas fa-exclamation-triangle mr-1.5"></i> {{ $message }}
+                                    </p>
+                                @enderror
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Tombol -->
-                    <div class="flex items-center justify-end space-x-4">
-                        <a href="{{ route('user.bookings.my') }}" class="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition font-medium">
-                            <i class="fas fa-arrow-left mr-2"></i> Batal
-                        </a>
-                        <button type="submit" style="background: linear-gradient(to right, #6366f1, #9333ea);" class="px-6 py-3 text-white rounded-xl hover:opacity-90 transition font-medium shadow-md">
-                            <i class="fas fa-paper-plane mr-2"></i> Kirim Booking
-                        </button>
-                    </div>
-                </form>
+                        <!-- Info -->
+                        <div class="mb-6 p-4 rounded-2xl flex items-start" style="background: linear-gradient(135deg, #eef2ff, #f5f3ff); border: 1px solid #c7d2fe;">
+                            <div class="p-2.5 rounded-xl mr-3 mt-0.5" style="background: rgba(255,255,255,0.7);">
+                                <i class="fas fa-info-circle text-indigo-500"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-indigo-800 font-semibold">Informasi</p>
+                                <p class="text-sm text-indigo-600 mt-1">Booking akan dikirim ke admin untuk disetujui. Status booking bisa dilihat di halaman "Booking Saya".</p>
+                            </div>
+                        </div>
 
+                        <!-- Tombol -->
+                        <div class="flex items-center justify-end space-x-4 pt-4 border-t border-gray-100">
+                            <a href="{{ route('user.bookings.my') }}"
+                               class="px-6 py-3 rounded-xl font-semibold text-sm transition-all hover:scale-105 active:scale-95 border"
+                               style="background: white; color: #475569; border-color: #e2e8f0;">
+                                <i class="fas fa-arrow-left mr-2"></i> Batal
+                            </a>
+                            <button type="submit"
+                                    class="px-6 py-3 text-white rounded-xl transition-all hover:scale-105 active:scale-95 font-semibold"
+                                    style="background: linear-gradient(135deg, #6366f1, #8b5cf6); box-shadow: 0 8px 20px -8px rgba(99,102,241,0.6);">
+                                <i class="fas fa-paper-plane mr-2"></i> Kirim Booking
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -215,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <li><strong>Mata Pelajaran:</strong> ${data.schedule.subject || 'Tidak ada'}</li>
                             <li><strong>Jam:</strong> ${data.schedule.start_time} - ${data.schedule.end_time}</li>
                         </ul>
-                        <p class="mt-2 text-orange-800 font-medium">Silakan pilih waktu lain yang tidak berbenturan.</p>
+                        <p class="mt-2 text-amber-800 font-medium">Silakan pilih waktu lain yang tidak berbenturan.</p>
                     `;
                     conflictAlert.classList.remove('hidden');
                     submitBtn.disabled = true;
