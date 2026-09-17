@@ -68,6 +68,7 @@
                     @elseif($type === 'Lapangan') <i class="fas fa-futbol mr-1 text-info"></i>
                     @elseif($type === 'Masjid') <i class="fas fa-mosque mr-1 text-secondary"></i>
                     @elseif($type === 'Activity Room') <i class="fas fa-running mr-1 text-purple"></i>
+                    @elseif($type === 'Perpustakaan') <i class="fas fa-book-open mr-1 text-warning"></i>
                     @endif
                     <strong>{{ $type }}</strong>
                     <small class="text-muted ml-2">({{ $groupedRooms[$type]->count() }} ruangan)</small>
@@ -125,6 +126,7 @@
                                                     <th style="width: 180px;">Jam</th>
                                                     <th>Kelas</th>
                                                     <th>Mapel</th>
+                                                    <th>Guru</th>
                                                     <th style="width: 80px;">Status</th>
                                                     <th style="width: 120px;">Aksi</th>
                                                 </tr>
@@ -138,6 +140,7 @@
                                                     </td>
                                                     <td>{{ $schedule->classRoom?->name ?? '-' }}</td>
                                                     <td class="text-muted">{{ $schedule->subject ?? '-' }}</td>
+                                                    <td class="text-muted">{{ $schedule->teacher ?? '-' }}</td>
                                                     <td>
                                                         @if($schedule->status === 'active')
                                                             <span class="badge badge-success">Aktif</span>
@@ -220,6 +223,10 @@
                                                                     <div class="form-group">
                                                                         <label>Mata Pelajaran</label>
                                                                         <input type="text" name="subject" class="form-control" value="{{ $schedule->subject }}" placeholder="Contoh: Matematika">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>Guru Pengajar</label>
+                                                                        <input type="text" name="teacher" class="form-control" value="{{ $schedule->teacher }}" placeholder="Contoh: Budi Santoso, S.Pd">
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <label>Hari</label>
@@ -332,6 +339,7 @@
                                                     <th style="width: 180px;">Jam</th>
                                                     <th>Kelas</th>
                                                     <th>Mapel</th>
+                                                    <th>Guru</th>
                                                     <th style="width: 80px;">Status</th>
                                                     <th style="width: 120px;">Aksi</th>
                                                 </tr>
@@ -345,6 +353,7 @@
                                                     </td>
                                                     <td>{{ $schedule->classRoom?->name ?? '-' }}</td>
                                                     <td class="text-muted">{{ $schedule->subject ?? '-' }}</td>
+                                                    <td class="text-muted">{{ $schedule->teacher ?? '-' }}</td>
                                                     <td>
                                                         @if($schedule->status === 'active')
                                                             <span class="badge badge-success">Aktif</span>

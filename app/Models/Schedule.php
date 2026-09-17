@@ -13,6 +13,7 @@ class Schedule extends Model
         'room_id',
         'class_id',
         'subject',
+        'teacher',
         'day_of_week',
         'start_time',
         'end_time',

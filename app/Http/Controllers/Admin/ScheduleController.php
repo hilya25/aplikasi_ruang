@@ -56,12 +56,13 @@ class ScheduleController extends Controller
             'room_id'     => 'required|exists:rooms,id',
             'class_id'    => 'nullable|exists:classes,id',
             'subject'     => 'nullable|string|max:100',
+            'teacher'     => 'nullable|string|max:100',
             'day_of_week' => 'required|string|max:10',
             'start_time'  => 'required|date_format:H:i',
             'end_time'    => 'required|date_format:H:i|after:start_time',
         ]);
 
-        Schedule::create($request->only('room_id', 'class_id', 'subject', 'day_of_week', 'start_time', 'end_time'));
+        Schedule::create($request->only('room_id', 'class_id', 'subject', 'teacher', 'day_of_week', 'start_time', 'end_time'));
 
         return redirect()->route('admin.schedules.index')
             ->with('success', 'Jadwal berhasil ditambahkan!');
@@ -76,12 +77,13 @@ class ScheduleController extends Controller
             'room_id'     => 'required|exists:rooms,id',
             'class_id'    => 'nullable|exists:classes,id',
             'subject'     => 'nullable|string|max:100',
+            'teacher'     => 'nullable|string|max:100',
             'day_of_week' => 'required|string|max:10',
             'start_time'  => 'required|date_format:H:i',
             'end_time'    => 'required|date_format:H:i|after:start_time',
         ]);
 
-        $schedule->update($request->only('room_id', 'class_id', 'subject', 'day_of_week', 'start_time', 'end_time'));
+        $schedule->update($request->only('room_id', 'class_id', 'subject', 'teacher', 'day_of_week', 'start_time', 'end_time'));
 
         return redirect()->route('admin.schedules.index')
             ->with('success', 'Jadwal berhasil diperbarui!');
@@ -121,6 +123,7 @@ class ScheduleController extends Controller
             'days'      => 'required|array|min:1',
             'days.*'    => 'string',
             'subjects'  => 'required|array',
+            'teachers'  => 'nullable|array',
             'start_times' => 'required|array',
             'end_times'   => 'required|array',
         ]);
@@ -132,6 +135,7 @@ class ScheduleController extends Controller
 
             foreach ($days as $day) {
                 $subjects = $request->subjects[$day] ?? [];
+                $teachers = $request->teachers[$day] ?? [];
                 $starts   = $request->start_times[$day] ?? [];
                 $ends     = $request->end_times[$day] ?? [];
 
@@ -146,6 +150,7 @@ class ScheduleController extends Controller
                             'room_id'     => $roomId,
                             'class_id'    => $classId,
                             'subject'     => $subjects[$i] ?? null,
+                            'teacher'     => $teachers[$i] ?? null,
                             'day_of_week' => $day,
                             'start_time'  => $start,
                             'end_time'    => $end,

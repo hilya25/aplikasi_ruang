@@ -13,6 +13,7 @@
                              @elseif($room->type === 'Lapangan') fa-futbol
                              @elseif($room->type === 'Masjid') fa-mosque
                              @elseif($room->type === 'Activity Room') fa-person-running
+                             @elseif($room->type === 'Perpustakaan') fa-book-open
                              @else fa-door-open @endif"></i>
                 </span>
                 {{ $room->name }}
@@ -21,7 +22,7 @@
     </x-slot>
 
     <div class="py-10">
-        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
+        <div class="w-full px-6 sm:px-10 lg:px-16">
 
             <!-- Info Ruangan -->
             <div class="aesthetic-card overflow-hidden mb-8 animate-fade-up">
@@ -46,7 +47,10 @@
                                 @elseif($room->type === 'Lab') bg-purple-100 text-purple-700
                                 @elseif($room->type === 'Aula') bg-orange-100 text-orange-700
                                 @elseif($room->type === 'Lapangan') bg-green-100 text-green-700
-                                @else bg-teal-100 text-teal-700 @endif">
+                                @elseif($room->type === 'Masjid') bg-teal-100 text-teal-700
+                                @elseif($room->type === 'Activity Room') bg-pink-100 text-pink-700
+                                @elseif($room->type === 'Perpustakaan') bg-amber-100 text-amber-700
+                                @else bg-gray-100 text-gray-700 @endif">
                                 {{ $room->type }}
                             </span>
                         </div>
@@ -119,41 +123,37 @@
                     @endphp
 
                     @if($schedules->count() > 0)
-                        <div class="space-y-5">
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                             @foreach($days as $day)
                                 @if(isset($grouped[$day]) && $grouped[$day]->count() > 0)
                                 <div>
-                                    <h4 class="font-semibold text-gray-700 mb-2.5 flex items-center">
-                                        <span class="inline-flex items-center justify-center w-24 px-3 py-1.5 rounded-xl text-sm font-bold shadow-sm
+                                    <h4 class="font-semibold text-gray-700 mb-2.5">
+                                        <span class="inline-flex items-center justify-center px-3 py-1.5 rounded-xl text-sm font-bold shadow-sm
                                             @if(in_array($day, ['Senin','Selasa','Rabu'])) bg-gradient-to-r from-blue-500 to-indigo-500 text-white
                                             @else bg-gradient-to-r from-emerald-500 to-teal-500 text-white @endif">
                                             {{ $day }}
                                         </span>
                                     </h4>
-                                    <div class="ml-0 md:ml-28 space-y-2">
+                                    <div class="space-y-3">
                                         @foreach($grouped[$day] as $s)
-                                        <div class="flex items-center p-3.5 rounded-xl border transition-all hover:shadow-md" style="background: #f8fafc; border-color: #eef2f7;">
-                                            <div class="p-2.5 rounded-lg mr-3" style="background: linear-gradient(135deg, #eef2ff, #e0e7ff);">
-                                                <i class="fas fa-clock text-indigo-500 text-sm"></i>
-                                            </div>
-                                            <div class="flex-1">
-                                                <p class="font-semibold text-gray-800">
+                                        <div class="p-3.5 rounded-xl border transition-all hover:shadow-md" style="background: #f8fafc; border-color: #eef2f7;">
+                                            <div class="flex items-center justify-between mb-1.5">
+                                                <p class="font-semibold text-gray-800 text-sm">
                                                     {{ \Carbon\Carbon::parse($s->start_time)->format('H:i') }}
                                                     <span class="text-gray-300 mx-1">—</span>
                                                     {{ \Carbon\Carbon::parse($s->end_time)->format('H:i') }}
                                                 </p>
-                                                <p class="text-sm text-gray-500">
-                                                    @if($s->subject)
-                                                        {{ $s->subject }}
-                                                    @endif
-                                                    @if($s->classRoom)
-                                                        @if($s->subject) <span class="text-gray-300 mx-1">•</span> @endif {{ $s->classRoom->name }}
-                                                    @endif
-                                                </p>
+                                                <span class="w-2 h-2 rounded-full bg-red-500 flex-shrink-0" title="Terisi"></span>
                                             </div>
-                                            <span class="px-2.5 py-1 rounded-full text-xs font-semibold" style="background: #fee2e2; color: #b91c1c;">
-                                                <span class="inline-block w-1.5 h-1.5 rounded-full bg-red-500 mr-1.5"></span>Terisi
-                                            </span>
+                                            @if($s->subject)
+                                                <p class="text-sm font-medium text-gray-700 mb-0.5">{{ $s->subject }}</p>
+                                            @endif
+                                            @if($s->teacher)
+                                                <p class="text-xs text-gray-500 mb-0.5">{{ $s->teacher }}</p>
+                                            @endif
+                                            @if($s->classRoom)
+                                                <p class="text-xs text-gray-400">{{ $s->classRoom->name }}</p>
+                                            @endif
                                         </div>
                                         @endforeach
                                     </div>
@@ -179,8 +179,8 @@
                         <i class="fas fa-calendar-check text-emerald-500"></i>
                     </span>
                     <div>
-                        <h3 class="text-lg font-bold text-gray-800">Booking Mendatang</h3>
-                        <p class="text-sm text-gray-400">Booking yang sudah disetujui admin</p>
+                        <h3 class="text-lg font-bold text-gray-800">Jadwal Booking Disetujui Admin</h3>
+                        <p class="text-sm text-gray-400">Tanggal, jam, dan jenis acara yang telah dijadwalkan</p>
                     </div>
                 </div>
                 <div class="p-6">
@@ -189,22 +189,22 @@
                             @foreach($bookings as $b)
                             <div class="flex items-center p-4 rounded-xl border transition-all hover:shadow-md" style="background: #f8fafc; border-color: #eef2f7;">
                                 <div class="p-2.5 rounded-lg mr-3" style="background: linear-gradient(135deg, #ecfdf5, #d1fae5);">
-                                    <i class="fas fa-check text-emerald-500"></i>
+                                    <i class="fas fa-calendar-check text-emerald-500"></i>
                                 </div>
                                 <div class="flex-1">
                                     <p class="font-semibold text-gray-800">
+                                        <i class="far fa-calendar mr-1.5 text-gray-400"></i>
                                         {{ \Carbon\Carbon::parse($b->start_datetime)->translatedFormat('d M Y') }}
-                                        <span class="text-gray-300 mx-1">•</span>
+                                    </p>
+                                    <p class="text-sm text-gray-500 mt-1">
+                                        <i class="far fa-clock mr-1.5 text-gray-400"></i>
                                         {{ \Carbon\Carbon::parse($b->start_datetime)->format('H:i') }}
                                         <span class="text-gray-300 mx-1">—</span>
                                         {{ \Carbon\Carbon::parse($b->end_datetime)->format('H:i') }}
-                                    </p>
-                                    <p class="text-sm text-gray-500">
-                                        {{ $b->event_type }}
-                                        @if($b->description) — {{ $b->description }} @endif
+                                        <span class="text-gray-300 mx-2">•</span>
+                                        <i class="fas fa-tag mr-1 text-gray-400"></i>{{ $b->event_type }}
                                     </p>
                                 </div>
-                                <span class="px-2.5 py-1 rounded-full text-xs font-semibold" style="background: #d1fae5; color: #065f46;">Disetujui</span>
                             </div>
                             @endforeach
                         </div>

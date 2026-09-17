@@ -1,52 +1,57 @@
 <x-guest-layout>
-    <x-authentication-card>
 
-        <x-validation-errors class="mb-4" />
+<div class="card-logo">
+    <span class="c-icon">S</span>
+    <span class="c-name">SIPARU</span>
+</div>
 
-        @if (session('status'))
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ session('status') }}
-            </div>
-        @endif
+<x-validation-errors class="mb-4" />
 
-        <form method="POST" action="{{ route('login') }}">
-            @csrf
+@if (session('status'))
+    <div class="mb-4 font-medium text-sm text-green-600">
+        {{ session('status') }}
+    </div>
+@endif
 
-            <div>
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            </div>
+<form method="POST" action="{{ route('login') }}">
+    @csrf
 
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
-            </div>
+    <h1 class="form-title">Masuk ke Akun</h1>
+    <p class="form-subtitle">Silakan login untuk melanjutkan</p>
 
-            <div class="block mt-4">
-                <label for="remember_me" class="flex items-center">
-                    <x-checkbox id="remember_me" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600">Ingat saya</span>
-                </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                @if (Route::has('password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                        Lupa password?
-                    </a>
-                @endif
-
-                <x-button class="ms-4">
-                    Masuk
-                </x-button>
-            </div>
-        </form>
-
-        <div class="mt-4 text-center">
-            <p class="text-sm text-gray-600">
-                Belum punya akun?
-                <a href="{{ route('register') }}" class="text-indigo-600 hover:text-indigo-800 font-medium">Daftar sekarang</a>
-            </p>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <div class="input-wrap">
+            <i class="fas fa-envelope"></i>
+            <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username" placeholder="nama@sekolah.sch.id">
         </div>
-    </x-authentication-card>
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+            <i class="fas fa-lock"></i>
+            <input id="password" type="password" name="password" required autocomplete="current-password" placeholder="••••••••">
+        </div>
+    </div>
+
+    <div class="form-check">
+        <input type="checkbox" id="remember_me" name="remember">
+        <label for="remember_me">Ingat saya</label>
+    </div>
+
+    <button type="submit" class="btn-submit">
+        <i class="fas fa-right-to-bracket"></i> Masuk Sekarang
+    </button>
+
+    <div class="form-footer">
+        <a href="{{ route('password.request') }}">Lupa password?</a>
+    </div>
+
+    <div class="form-divider">atau</div>
+
+    <div class="form-footer" style="margin-top:0">
+        Belum punya akun? <a href="{{ route('register') }}">Daftar sekarang</a>
+    </div>
+</form>
 </x-guest-layout>

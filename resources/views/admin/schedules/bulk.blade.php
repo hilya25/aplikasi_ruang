@@ -126,6 +126,7 @@
                                                 <tr>
                                                     <th style="width: 50px;">#</th>
                                                     <th>Mata Pelajaran</th>
+                                                    <th>Guru Pengajar</th>
                                                     <th style="width: 150px;">Jam Mulai</th>
                                                     <th style="width: 150px;">Jam Selesai</th>
                                                     <th style="width: 60px;">Aksi</th>
@@ -136,6 +137,9 @@
                                                     <td>1</td>
                                                     <td>
                                                         <input type="text" name="subjects[{{ $day }}][]" class="form-control" placeholder="Contoh: Matematika">
+                                                    </td>
+                                                    <td>
+                                                        <input type="text" name="teachers[{{ $day }}][]" class="form-control" placeholder="Contoh: Budi Santoso, S.Pd">
                                                     </td>
                                                     <td>
                                                         <input type="time" name="start_times[{{ $day }}][]" class="form-control" required>
@@ -211,6 +215,7 @@
             tr.innerHTML =
                 '<td>' + (index + 1) + '</td>' +
                 '<td><input type="text" name="subjects[' + day + '][]" class="form-control" placeholder="Contoh: Bahasa Indonesia"></td>' +
+                '<td><input type="text" name="teachers[' + day + '][]" class="form-control" placeholder="Contoh: Budi Santoso, S.Pd"></td>' +
                 '<td><input type="time" name="start_times[' + day + '][]" class="form-control" required></td>' +
                 '<td><input type="time" name="end_times[' + day + '][]" class="form-control" required></td>' +
                 '<td><button type="button" class="btn btn-danger btn-sm" onclick="removeRow(this)" title="Hapus"><i class="fas fa-trash"></i></button></td>';
@@ -238,7 +243,7 @@
             var type = selectedOption.getAttribute('data-type');
             var group = document.getElementById('bulk_class_group');
             var classSelect = group.querySelector('select');
-            var nonClassTypes = ['Lab', 'Aula', 'Lapangan', 'Masjid', 'Activity Room'];
+            var nonClassTypes = ['Lab', 'Aula', 'Lapangan', 'Masjid', 'Activity Room', 'Perpustakaan'];
 
             if (nonClassTypes.includes(type)) {
                 classSelect.removeAttribute('required');

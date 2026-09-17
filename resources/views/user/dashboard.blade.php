@@ -185,6 +185,7 @@
                                                     @elseif($booking->room->type === 'Lapangan') {{ 'bg-gradient-to-br from-green-500 to-emerald-500' }}
                                                     @elseif($booking->room->type === 'Masjid') {{ 'bg-gradient-to-br from-teal-500 to-cyan-500' }}
                                                     @elseif($booking->room->type === 'Activity Room') {{ 'bg-gradient-to-br from-pink-500 to-rose-500' }}
+                                                    @elseif($booking->room->type === 'Perpustakaan') {{ 'bg-gradient-to-br from-amber-500 to-yellow-500' }}
                                                     @else {{ 'bg-gradient-to-br from-gray-400 to-gray-500' }} @endif">
                                                     <i class="fas @if($booking->room->type === 'Kelas') fa-chalkboard-user
                                                              @elseif($booking->room->type === 'Lab') fa-flask
@@ -192,6 +193,7 @@
                                                              @elseif($booking->room->type === 'Lapangan') fa-futbol
                                                              @elseif($booking->room->type === 'Masjid') fa-mosque
                                                              @elseif($booking->room->type === 'Activity Room') fa-person-running
+                                                             @elseif($booking->room->type === 'Perpustakaan') fa-book-open
                                                              @else fa-door-open @endif text-white text-xs"></i>
                                                 </span>
                                                 {{ $booking->room->name }}
@@ -218,9 +220,13 @@
                                                 <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold" style="background: #fef3c7; color: #92400e;">
                                                     <i class="fas fa-hourglass-half mr-1.5 text-amber-500"></i> Menunggu
                                                 </span>
-                                            @elseif($booking->status === 'approved')
+                                            @elseif($booking->status === 'approved' && \Carbon\Carbon::parse($booking->end_datetime)->isFuture())
                                                 <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold" style="background: #d1fae5; color: #065f46;">
                                                     <i class="fas fa-check-circle mr-1.5 text-emerald-500"></i> Disetujui
+                                                </span>
+                                            @elseif($booking->status === 'approved')
+                                                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold" style="background: #f3f4f6; color: #374151;">
+                                                    <i class="fas fa-check-double mr-1.5 text-gray-500"></i> Selesai
                                                 </span>
                                             @else
                                                 <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold" style="background: #fee2e2; color: #991b1b;">

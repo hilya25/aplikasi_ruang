@@ -89,7 +89,7 @@ class UserController extends Controller
         $groupedRooms = $rooms->groupBy('type');
 
         // Urutan jenis ruangan
-        $typeOrder = ['Kelas', 'Lab', 'Aula', 'Lapangan', 'Masjid', 'Activity Room'];
+        $typeOrder = ['Kelas', 'Lab', 'Aula', 'Lapangan', 'Masjid', 'Activity Room', 'Perpustakaan'];
 
         return view('user.rooms', compact('rooms', 'groupedRooms', 'typeOrder'));
     }
@@ -107,9 +107,10 @@ class UserController extends Controller
             ->orderBy('start_time')
             ->get();
 
-        // Booking yang sudah disetujui
+        // Booking yang sudah disetujui dan belum lewat waktu
         $bookings = $room->bookings()
             ->where('status', 'approved')
+            ->where('end_datetime', '>=', now())
             ->with('user')
             ->orderBy('start_datetime')
             ->get();

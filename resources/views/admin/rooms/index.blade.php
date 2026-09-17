@@ -35,6 +35,7 @@
                         @elseif($type === 'Lapangan') <i class="fas fa-futbol mr-1 text-info"></i>
                         @elseif($type === 'Masjid') <i class="fas fa-mosque mr-1 text-secondary"></i>
                         @elseif($type === 'Activity Room') <i class="fas fa-running mr-1 text-purple"></i>
+                        @elseif($type === 'Perpustakaan') <i class="fas fa-book-open mr-1 text-warning"></i>
                         @endif
                         <strong>{{ $type }}</strong>
                         <span class="badge badge-pill badge-{{ $type === 'Kelas' ? 'primary' : ($type === 'Lab' ? 'success' : ($type === 'Aula' ? 'warning' : ($type === 'Lapangan' ? 'info' : 'secondary'))) }} ml-2">
@@ -155,6 +156,7 @@
                                                         <option value="Lapangan" {{ $room->type === 'Lapangan' ? 'selected' : '' }}>Lapangan</option>
                                                         <option value="Masjid" {{ $room->type === 'Masjid' ? 'selected' : '' }}>Masjid</option>
                                                         <option value="Activity Room" {{ $room->type === 'Activity Room' ? 'selected' : '' }}>Activity Room</option>
+                                                        <option value="Perpustakaan" {{ $room->type === 'Perpustakaan' ? 'selected' : '' }}>Perpustakaan</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group">
@@ -384,6 +386,7 @@
                                 <option value="Lapangan">Lapangan</option>
                                 <option value="Masjid">Masjid</option>
                                 <option value="Activity Room">Activity Room</option>
+                                <option value="Perpustakaan">Perpustakaan</option>
                             </select>
                         </div>
                         <div class="form-group">

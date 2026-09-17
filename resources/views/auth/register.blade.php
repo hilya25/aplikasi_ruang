@@ -1,62 +1,66 @@
 <x-guest-layout>
-    <x-authentication-card>
 
-        <x-validation-errors class="mb-4" />
+<div class="card-logo">
+    <span class="c-icon">S</span>
+    <span class="c-name">SIPARU</span>
+</div>
 
-        <form method="POST" action="{{ route('register') }}">
-            @csrf
+<x-validation-errors class="mb-4" />
 
-            <div>
-                <x-label for="name" value="{{ __('Nama Lengkap') }}" />
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" placeholder="Nama lengkap Anda" />
-            </div>
+<form method="POST" action="{{ route('register') }}" style="--register-form: compact;">
+    @csrf
 
-            <div class="mt-4">
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" placeholder="contoh@sekolah.sch.id" />
-            </div>
+    <h1 class="form-title">Daftar Akun Baru</h1>
+    <p class="form-subtitle">Isi data di bawah untuk mulai menggunakan SIPARU</p>
 
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" placeholder="Minimal 8 karakter" />
-            </div>
+    <div class="form-group">
+        <label for="name">Nama Lengkap</label>
+        <div class="input-wrap">
+            <i class="fas fa-user"></i>
+            <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name" placeholder="Nama lengkap Anda">
+        </div>
+    </div>
 
-            <div class="mt-4">
-                <x-label for="password_confirmation" value="{{ __('Konfirmasi Password') }}" />
-                <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" placeholder="Ulangi password" />
-            </div>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <div class="input-wrap">
+            <i class="fas fa-envelope"></i>
+            <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="username" placeholder="contoh@sekolah.sch.id">
+        </div>
+    </div>
 
-            <div class="mt-4">
-                <x-label for="invite_code" value="{{ __('Invite Code (khusus Admin)') }}" />
-                <x-input id="invite_code" class="block mt-1 w-full" type="text" name="invite_code" :value="old('invite_code')" autocomplete="off" placeholder="Kosongkan jika mendaftar sebagai guru/staff" />
-            </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrap">
+            <i class="fas fa-lock"></i>
+            <input id="password" type="password" name="password" required autocomplete="new-password" placeholder="Minimal 8 karakter">
+        </div>
+    </div>
 
-            @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
-                <div class="mt-4">
-                    <x-label for="terms">
-                        <div class="flex items-center">
-                            <x-checkbox name="terms" id="terms" required />
+    <div class="form-group">
+        <label for="password_confirmation">Konfirmasi Password</label>
+        <div class="input-wrap">
+            <i class="fas fa-lock"></i>
+            <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password" placeholder="Ulangi password">
+        </div>
+    </div>
 
-                            <div class="ms-2">
-                                {!! __('I agree to the :terms_of_service and :privacy_policy', [
-                                        'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Terms of Service').'</a>',
-                                        'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Privacy Policy').'</a>',
-                                ]) !!}
-                            </div>
-                        </div>
-                    </x-label>
-                </div>
-            @endif
+    <div class="form-group">
+        <label for="invite_code">Invite Code <span style="color:#64748b;font-weight:500">(khusus Admin)</span></label>
+        <div class="input-wrap">
+            <i class="fas fa-key"></i>
+            <input id="invite_code" type="text" name="invite_code" value="{{ old('invite_code') }}" autocomplete="off" placeholder="Kosongkan jika daftar sebagai guru/staff">
+        </div>
+    </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                    Sudah punya akun?
-                </a>
+    <button type="submit" class="btn-submit" style="margin-top:20px">
+        <i class="fas fa-user-plus"></i> Daftar Sekarang
+    </button>
 
-                <x-button class="ms-4">
-                    Daftar
-                </x-button>
-            </div>
-        </form>
-    </x-authentication-card>
+    <div class="form-divider">atau</div>
+
+    <div class="form-footer" style="margin-top:0">
+        Sudah punya akun? <a href="{{ route('login') }}">Masuk di sini</a>
+    </div>
+</form>
 </x-guest-layout>

@@ -1,31 +1,40 @@
 <x-guest-layout>
-    <x-authentication-card>
 
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+<div class="card-logo">
+    <span class="c-icon">S</span>
+    <span class="c-name">SIPARU</span>
+</div>
+
+<x-validation-errors class="mb-4" />
+
+@if (session('status'))
+    <div class="mb-4 font-medium text-sm text-green-600">
+        {{ session('status') }}
+    </div>
+@endif
+
+<form method="POST" action="{{ route('password.email') }}">
+    @csrf
+
+    <h1 class="form-title">Lupa Password?</h1>
+    <p class="form-subtitle">Masukkan email Anda dan kami akan mengirimkan tautan untuk mereset password.</p>
+
+    <div class="form-group">
+        <label for="email">Email</label>
+        <div class="input-wrap">
+            <i class="fas fa-envelope"></i>
+            <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus autocomplete="username" placeholder="nama@sekolah.sch.id">
         </div>
+    </div>
 
-        @if (session('status'))
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ session('status') }}
-            </div>
-        @endif
+    <button type="submit" class="btn-submit">
+        <i class="fas fa-paper-plane"></i> Kirim Tautan Reset
+    </button>
 
-        <x-validation-errors class="mb-4" />
+    <div class="form-divider">atau</div>
 
-        <form method="POST" action="{{ route('password.email') }}">
-            @csrf
-
-            <div class="block">
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <x-button>
-                    {{ __('Email Password Reset Link') }}
-                </x-button>
-            </div>
-        </form>
-    </x-authentication-card>
+    <div class="form-footer" style="margin-top:0">
+        <a href="{{ route('login') }}"><i class="fas fa-arrow-left" style="margin-right:5px"></i> Kembali ke halaman masuk</a>
+    </div>
+</form>
 </x-guest-layout>

@@ -46,6 +46,7 @@
                             @elseif($type === 'Lapangan') bg-gradient-to-br from-green-500 to-emerald-600
                             @elseif($type === 'Masjid') bg-gradient-to-br from-teal-500 to-cyan-600
                             @elseif($type === 'Activity Room') bg-gradient-to-br from-pink-500 to-rose-600
+                            @elseif($type === 'Perpustakaan') bg-gradient-to-br from-amber-500 to-yellow-600
                             @else bg-gradient-to-br from-gray-400 to-gray-500 @endif">
                             <i class="fas @if($type === 'Kelas') fa-chalkboard-teacher
                                      @elseif($type === 'Lab') fa-flask
@@ -53,6 +54,7 @@
                                      @elseif($type === 'Lapangan') fa-futbol
                                      @elseif($type === 'Masjid') fa-mosque
                                      @elseif($type === 'Activity Room') fa-running
+                                     @elseif($type === 'Perpustakaan') fa-book-open
                                      @else fa-door-open @endif text-white"></i>
                         </span>
                         <h3 class="text-xl font-extrabold text-gray-800">{{ $type }}</h3>
@@ -80,6 +82,7 @@
                                     @elseif($room->type === 'Lapangan') bg-gradient-to-br from-green-500 to-emerald-600
                                     @elseif($room->type === 'Masjid') bg-gradient-to-br from-teal-500 to-cyan-600
                                     @elseif($room->type === 'Activity Room') bg-gradient-to-br from-pink-500 to-rose-600
+                                    @elseif($room->type === 'Perpustakaan') bg-gradient-to-br from-amber-500 to-yellow-600
                                     @else bg-gradient-to-br from-gray-500 to-gray-600 @endif">
                                     <div class="absolute -right-6 -bottom-8 w-28 h-28 rounded-full" style="background: rgba(255,255,255,0.12);"></div>
                                     <div class="absolute right-8 -bottom-12 w-24 h-24 rounded-full" style="background: rgba(255,255,255,0.08);"></div>
@@ -89,6 +92,7 @@
                                              @elseif($room->type === 'Lapangan') fa-futbol
                                              @elseif($room->type === 'Masjid') fa-mosque
                                              @elseif($room->type === 'Activity Room') fa-running
+                                             @elseif($room->type === 'Perpustakaan') fa-book-open
                                              @else fa-door-open @endif text-white text-4xl opacity-90 relative z-10"></i>
                                 </div>
                             @endif
@@ -105,6 +109,7 @@
                                             @elseif($room->type === 'Lapangan') bg-green-100 text-green-700
                                             @elseif($room->type === 'Masjid') bg-teal-100 text-teal-700
                                             @elseif($room->type === 'Activity Room') bg-pink-100 text-pink-700
+                                            @elseif($room->type === 'Perpustakaan') bg-amber-100 text-amber-700
                                             @else bg-gray-100 text-gray-700 @endif">
                                             {{ $room->type }}
                                         </span>
