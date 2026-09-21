@@ -30,7 +30,7 @@
 
         /* ================= HERO ================= */
         .hero{min-height:100vh;display:flex;align-items:center;background:#0f172a;padding:130px 24px 90px;position:relative;overflow:hidden}
-        .hero-glow{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none}
+        .hero-glow{position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;transition:transform .15s ease-out}
         .hero-glow.g1{width:560px;height:560px;top:-160px;right:-100px;background:rgba(99,102,241,0.28)}
         .hero-glow.g2{width:460px;height:460px;bottom:-140px;left:-120px;background:rgba(168,85,247,0.2)}
         .hero-glow.g3{width:300px;height:300px;top:38%;left:44%;background:rgba(56,189,248,0.1)}
@@ -40,7 +40,15 @@
         .hero-tagline .pulse-dot{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,0.6);animation:pulse 2s infinite}
         @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(74,222,128,0.5)}70%{box-shadow:0 0 0 9px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
         .hero h1{font-size:3.6rem;font-weight:800;line-height:1.12;color:#fff;letter-spacing:-1.2px;max-width:760px;margin:0 auto}
-        .hero h1 .grad{background:linear-gradient(120deg,#818cf8 0%,#c084fc 50%,#f0abfc 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .hero h1 .grad{
+            background:linear-gradient(90deg,#818cf8,#c084fc,#f0abfc,#c084fc,#818cf8);
+            background-size:300% 100%;
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+            animation:shimmer 4s ease-in-out infinite;
+        }
+        @keyframes shimmer{0%{background-position:100% 50%}50%{background-position:0% 50%}100%{background-position:100% 50%}}
+        .typing-cursor{display:inline-block;width:3px;height:0.85em;background:#818cf8;margin-left:4px;vertical-align:text-bottom;animation:blink 1s step-end infinite;border-radius:2px}
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
         .hero p.lead{font-size:1.1rem;color:#94a3b8;margin:22px auto 0;line-height:1.75;max-width:560px}
         .hero-buttons{display:flex;gap:14px;margin-top:38px;justify-content:center;flex-wrap:wrap}
         .btn-hero{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;padding:15px 32px;border-radius:14px;font-weight:700;font-size:0.95rem;display:inline-flex;align-items:center;gap:9px;box-shadow:0 10px 30px rgba(99,102,241,0.4);transition:all .3s}
@@ -50,46 +58,22 @@
         .hero-trust{display:flex;align-items:center;gap:10px;margin-top:34px;color:#64748b;font-size:0.83rem;justify-content:center}
         .hero-trust i{color:#4ade80}
 
-        /* HERO PREVIEW CARD */
-        .hero-visual{position:relative;margin-top:52px}
-        .preview-card{background:rgba(30,41,59,0.72);border:1px solid rgba(148,163,184,0.16);border-radius:24px;padding:28px 32px;backdrop-filter:blur(20px);box-shadow:0 40px 80px rgba(2,6,23,0.6),inset 0 1px 0 rgba(255,255,255,0.06);max-width:780px;margin:0 auto}
-        .preview-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-        .preview-head .ph-title{display:flex;align-items:center;gap:10px;color:#e2e8f0;font-weight:700;font-size:0.95rem}
-        .preview-head .ph-title .ph-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#6366f1,#a855f7);display:flex;align-items:center;justify-content:center;font-size:0.9rem}
-        .preview-head .live-badge{font-size:0.7rem;font-weight:700;color:#4ade80;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.25);padding:5px 12px;border-radius:100px;display:flex;align-items:center;gap:6px}
-        .preview-rows{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-        .room-row{display:flex;align-items:center;gap:14px;padding:13px 15px;background:rgba(255,255,255,0.035);border:1px solid rgba(148,163,184,0.08);border-radius:14px;transition:all .25s}
-        .room-row:hover{background:rgba(99,102,241,0.12);border-color:rgba(129,140,248,0.3);transform:translateY(-2px)}
-        .room-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;flex-shrink:0}
-        .room-row .r-info{flex:1;min-width:0}
-        .room-row .r-info h4{font-size:0.86rem;font-weight:700;color:#f1f5f9}
-        .room-row .r-info p{font-size:0.72rem;color:#64748b}
-        .room-row .r-status{font-size:0.68rem;font-weight:700;padding:5px 11px;border-radius:100px;white-space:nowrap}
-        .r-status.ok{background:rgba(74,222,128,0.12);color:#4ade80}
-        .r-status.busy{background:rgba(251,146,60,0.12);color:#fb923c}
-        .floating-chip{position:absolute;background:rgba(30,41,59,0.92);border:1px solid rgba(148,163,184,0.2);backdrop-filter:blur(14px);border-radius:16px;padding:13px 18px;display:flex;align-items:center;gap:11px;box-shadow:0 20px 50px rgba(2,6,23,0.55);animation:float 5s ease-in-out infinite;z-index:3}
-        .floating-chip .fc-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:0.95rem}
-        .floating-chip .fc-text h5{font-size:0.78rem;font-weight:800;color:#f1f5f9}
-        .floating-chip .fc-text p{font-size:0.68rem;color:#94a3b8}
-        .chip-1{top:-20px;right:40px;animation-delay:0s}
-        .chip-2{bottom:-20px;left:40px;animation-delay:2.5s}
-        @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}
+        /* ================= FLOATING PARTICLES ================= */
+        .particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}
+        .particle{position:absolute;border-radius:50%;animation:floatParticle linear infinite;opacity:0}
+        @keyframes floatParticle{
+            0%{transform:translateY(0) scale(1);opacity:0}
+            10%{opacity:.6}
+            90%{opacity:.6}
+            100%{transform:translateY(-100vh) scale(0.3);opacity:0}
+        }
 
         /* ================= MARQUEE ================= */
         .marquee-wrap{background:#0f172a;border-top:1px solid rgba(148,163,184,0.09);border-bottom:1px solid rgba(148,163,184,0.09);padding:20px 0;overflow:hidden;white-space:nowrap}
-        .marquee{display:inline-flex;gap:56px;animation:scroll 30s linear infinite}
+        .marquee{display:inline-flex;gap:56px;animation:scrollMarquee 30s linear infinite}
         .marquee span{color:#475569;font-weight:700;font-size:0.85rem;letter-spacing:2.5px;text-transform:uppercase;display:inline-flex;align-items:center;gap:12px}
         .marquee i{color:#6366f1;font-size:0.8rem}
-        @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
-        /* ================= STATS ================= */
-        .stats-band{background:#fff;padding:72px 24px}
-        .stats-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:26px}
-        .stat-card{text-align:center;padding:34px 20px;border-radius:22px;background:linear-gradient(180deg,#fafbff,#f4f4fd);border:1px solid #e9e9f9;transition:all .3s}
-        .stat-card:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(99,102,241,0.12);border-color:#d5d7f6}
-        .stat-card .s-icon{width:52px;height:52px;margin:0 auto 16px;border-radius:15px;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
-        .stat-card .num{font-size:2.3rem;font-weight:800;letter-spacing:-1px;background:linear-gradient(135deg,#4f46e5,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-        .stat-card .label{font-size:0.82rem;color:#64748b;font-weight:600;margin-top:4px}
+        @keyframes scrollMarquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
         /* ================= FEATURES ================= */
         .features{padding:110px 24px;background:#f8fafc;position:relative}
@@ -145,18 +129,23 @@
         .d1{animation-delay:.1s}.d2{animation-delay:.25s}.d3{animation-delay:.4s}.d4{animation-delay:.55s}
         @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
 
+        /* ================= SCROLL REVEAL ================= */
+        .reveal{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.22,.8,.35,1), transform .8s cubic-bezier(.22,.8,.35,1)}
+        .reveal.active{opacity:1;transform:translateY(0)}
+        .reveal-left{opacity:0;transform:translateX(-50px);transition:opacity .8s cubic-bezier(.22,.8,.35,1), transform .8s cubic-bezier(.22,.8,.35,1)}
+        .reveal-left.active{opacity:1;transform:translateX(0)}
+        .reveal-right{opacity:0;transform:translateX(50px);transition:opacity .8s cubic-bezier(.22,.8,.35,1), transform .8s cubic-bezier(.22,.8,.35,1)}
+        .reveal-right.active{opacity:1;transform:translateX(0)}
+        .reveal-scale{opacity:0;transform:scale(0.88);transition:opacity .7s cubic-bezier(.22,.8,.35,1), transform .7s cubic-bezier(.22,.8,.35,1)}
+        .reveal-scale.active{opacity:1;transform:scale(1)}
+
         /* ================= RESPONSIVE ================= */
         @media(max-width:980px){
             .hero h1{font-size:2.4rem}
             .hero p.lead{max-width:100%}
-            .preview-card{padding:22px}
-            .preview-rows{grid-template-columns:1fr}
-            .hero-visual{margin-top:40px}
-            .chip-1{right:6px;top:-16px}.chip-2{left:6px;bottom:-16px}
             .features-grid{grid-template-columns:1fr;max-width:520px}
             .steps{grid-template-columns:1fr;max-width:520px}
             .step-arrow{display:none!important}
-            .stats-grid{grid-template-columns:repeat(2,1fr)}
             .nav-links a:not(.btn-cta){display:none}
             .cta-box{padding:60px 28px}
             .cta-box h2{font-size:1.9rem}
@@ -191,10 +180,17 @@
     <div class="hero-glow g2"></div>
     <div class="hero-glow g3"></div>
     <div class="hero-grid"></div>
+    <div class="particles" aria-hidden="true">
+        <span class="particle" style="width:5px;height:5px;left:12%;bottom:-10px;background:#818cf8;animation-duration:14s;animation-delay:0s"></span>
+        <span class="particle" style="width:3px;height:3px;left:28%;bottom:-10px;background:#c084fc;animation-duration:18s;animation-delay:4s"></span>
+        <span class="particle" style="width:6px;height:6px;left:55%;bottom:-10px;background:#38bdf8;animation-duration:16s;animation-delay:2s"></span>
+        <span class="particle" style="width:4px;height:4px;left:76%;bottom:-10px;background:#a5b4fc;animation-duration:20s;animation-delay:7s"></span>
+        <span class="particle" style="width:3px;height:3px;left:90%;bottom:-10px;background:#f0abfc;animation-duration:13s;animation-delay:5s"></span>
+    </div>
     <div class="hero-content">
         <div class="hero-text">
             <div class="hero-tagline fade-up d1"><span class="pulse-dot"></span> Sistem Peminjaman Ruangan Sekolah</div>
-            <h1 class="fade-up d2">Pinjam Ruangan,<br><span class="grad">Sekali Klik Selesai.</span></h1>
+            <h1 class="fade-up d2">Pinjam Ruangan,<br><span class="grad">Sekali Klik Selesai.</span><span class="typing-cursor"></span></h1>
             <p class="lead fade-up d3">Kelola peminjaman kelas, laboratorium, aula, hingga lapangan dalam satu platform digital — tanpa antre, tanpa buku tulis, tanpa ribet.</p>
             <div class="hero-buttons fade-up d4">
                 @auth
@@ -208,53 +204,11 @@
                 <i class="fas fa-shield-halved"></i> Dipercaya guru & staff · Data terpusat & aman
             </div>
         </div>
-
-        <div class="hero-visual fade-up d3">
-            <div class="preview-card">
-                <div class="preview-head">
-                    <div class="ph-title">
-                        <span class="ph-icon"><i class="fas fa-building-columns"></i></span>
-                        Status Ruangan Hari Ini
-                    </div>
-                    <span class="live-badge"><i class="fas fa-circle" style="font-size:0.45rem"></i> LIVE</span>
-                </div>
-                <div class="preview-rows">
-                    <div class="room-row">
-                        <div class="room-icon" style="background:linear-gradient(135deg,#3b82f6,#6366f1)"><i class="fas fa-chalkboard-user"></i></div>
-                        <div class="r-info"><h4>Ruang Kelas X-A</h4><p>Kelas · Kapasitas 36 orang</p></div>
-                        <span class="r-status ok"><i class="fas fa-check"></i> Tersedia</span>
-                    </div>
-                    <div class="room-row">
-                        <div class="room-icon" style="background:linear-gradient(135deg,#8b5cf6,#d946ef)"><i class="fas fa-flask"></i></div>
-                        <div class="r-info"><h4>Lab Komputer 1</h4><p>Lab · Kapasitas 30 orang</p></div>
-                        <span class="r-status busy"><i class="fas fa-clock"></i> Digunakan</span>
-                    </div>
-                    <div class="room-row">
-                        <div class="room-icon" style="background:linear-gradient(135deg,#f59e0b,#f97316)"><i class="fas fa-building"></i></div>
-                        <div class="r-info"><h4>Aula Utama</h4><p>Aula · Kapasitas 200 orang</p></div>
-                        <span class="r-status ok"><i class="fas fa-check"></i> Tersedia</span>
-                    </div>
-                    <div class="room-row" style="margin-bottom:0">
-                        <div class="room-icon" style="background:linear-gradient(135deg,#10b981,#34d399)"><i class="fas fa-table-tennis-paddle-ball"></i></div>
-                        <div class="r-info"><h4>Ruang OSIS</h4><p>Activity Room · Kapasitas 20 orang</p></div>
-                        <span class="r-status ok"><i class="fas fa-check"></i> Tersedia</span>
-                    </div>
-                </div>
-            </div>
-            <div class="floating-chip chip-1">
-                <div class="fc-icon" style="background:linear-gradient(135deg,#22c55e,#4ade80)"><i class="fas fa-check"></i></div>
-                <div class="fc-text"><h5>Booking Disetujui</h5><p>Notifikasi instan</p></div>
-            </div>
-            <div class="floating-chip chip-2">
-                <div class="fc-icon" style="background:linear-gradient(135deg,#6366f1,#a78bfa)"><i class="fas fa-calendar-check"></i></div>
-                <div class="fc-text"><h5>Jadwal Real-time</h5><p>Selalu up to date</p></div>
-            </div>
-        </div>
     </div>
 </section>
 
 <!-- MARQUEE -->
-<div class="marquee-wrap">
+<div class="marquee-wrap reveal-scale">
     <div class="marquee">
         @php
             $marqueeItems = ['Ruang Kelas','Laboratorium','Aula','Lapangan','Masjid','Activity Room','Perpustakaan','Ruang Rapat'];
@@ -265,66 +219,40 @@
     </div>
 </div>
 
-<!-- STATS -->
-<section class="stats-band">
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="s-icon" style="background:linear-gradient(135deg,#eef2ff,#e0e7ff);color:#4f46e5"><i class="fas fa-door-open"></i></div>
-            <div class="num">{{ \App\Models\Room::where('is_active', true)->count() }}</div>
-            <div class="label">Ruangan Tersedia</div>
-        </div>
-        <div class="stat-card">
-            <div class="s-icon" style="background:linear-gradient(135deg,#ecfdf5,#d1fae5);color:#10b981"><i class="fas fa-circle-check"></i></div>
-            <div class="num">{{ \App\Models\Booking::where('status', 'approved')->count() }}</div>
-            <div class="label">Booking Disetujui</div>
-        </div>
-        <div class="stat-card">
-            <div class="s-icon" style="background:linear-gradient(135deg,#fff7ed,#ffedd5);color:#f59e0b"><i class="fas fa-hourglass-half"></i></div>
-            <div class="num">{{ \App\Models\Booking::where('status', 'pending')->count() }}</div>
-            <div class="label">Menunggu Approval</div>
-        </div>
-        <div class="stat-card">
-            <div class="s-icon" style="background:linear-gradient(135deg,#fdf4ff,#fae8ff);color:#a855f7"><i class="fas fa-users"></i></div>
-            <div class="num">{{ \App\Models\User::count() }}</div>
-            <div class="label">Pengguna Terdaftar</div>
-        </div>
-    </div>
-</section>
-
 <!-- FEATURES -->
 <section class="features" id="fitur">
-    <div class="section-title">
+    <div class="section-title reveal">
         <span class="tag"><i class="fas fa-star"></i> Fitur Utama</span>
         <h2>Semua Kebutuhan, Satu Platform</h2>
         <p>Dibangun untuk memudahkan pengelolaan fasilitas sekolah sehari-hari</p>
     </div>
     <div class="features-grid">
-        <div class="feature-card">
+        <div class="feature-card reveal" style="transition-delay:.05s">
             <div class="feature-icon fi-1"><i class="fas fa-calendar-check"></i></div>
             <h3>Booking Online 24/7</h3>
             <p>Ajukan peminjaman ruangan kapan saja, di mana saja. Pilih ruang, isi kegiatan, atur jadwal — selesai dalam hitungan menit.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card reveal" style="transition-delay:.15s">
             <div class="feature-icon fi-2"><i class="fas fa-bolt"></i></div>
             <h3>Approval Cepat</h3>
             <p>Admin menyetujui atau menolak permohonan secara real-time. Setiap keputusan langsung muncul sebagai notifikasi.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card reveal" style="transition-delay:.25s">
             <div class="feature-icon fi-3"><i class="fas fa-clock-rotate-left"></i></div>
             <h3>Status Otomatis</h3>
             <p>Booking yang sudah lewat waktunya otomatis berstatus "Selesai". Riwayat peminjaman selalu rapi dan akurat.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card reveal" style="transition-delay:.05s">
             <div class="feature-icon fi-4"><i class="fas fa-triangle-exclamation"></i></div>
             <h3>Cek Konflik Jadwal</h3>
             <p>Sistem otomatis mendeteksi bentrok dengan jadwal pelajaran maupun booking lain, lengkap dengan detailnya.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card reveal" style="transition-delay:.15s">
             <div class="feature-icon fi-5"><i class="fas fa-chart-pie"></i></div>
             <h3>Dashboard Statistik</h3>
             <p>Pantau penggunaan ruangan, jumlah booking aktif, dan status permohonan dalam tampilan yang ringkas dan jelas.</p>
         </div>
-        <div class="feature-card">
+        <div class="feature-card reveal" style="transition-delay:.25s">
             <div class="feature-icon fi-6"><i class="fas fa-chalkboard"></i></div>
             <h3>Jadwal Pelajaran Lengkap</h3>
             <p>Lihat jadwal pelajaran per ruangan lengkap dengan mata pelajaran, guru pengajar, dan kelas pengguna.</p>
@@ -334,25 +262,25 @@
 
 <!-- HOW IT WORKS -->
 <section class="how" id="cara">
-    <div class="section-title">
+    <div class="section-title reveal">
         <span class="tag"><i class="fas fa-route"></i> Cara Kerja</span>
         <h2>3 Langkah Saja</h2>
         <p>Proses peminjaman yang simpel untuk semua orang</p>
     </div>
     <div class="steps">
-        <div class="step-card">
+        <div class="step-card reveal-left" style="transition-delay:.05s">
             <div class="step-arrow"><i class="fas fa-chevron-right"></i></div>
             <div class="step-num">1</div>
             <h3>Daftar Akun</h3>
             <p>Buat akun baru dengan email sekolah Anda. Prosesnya gratis dan hanya butuh satu menit.</p>
         </div>
-        <div class="step-card">
+        <div class="step-card reveal" style="transition-delay:.15s">
             <div class="step-arrow"><i class="fas fa-chevron-right"></i></div>
             <div class="step-num">2</div>
             <h3>Ajukan Booking</h3>
             <p>Pilih ruangan, masukkan detail kegiatan, dan tentukan tanggal serta jam yang diinginkan.</p>
         </div>
-        <div class="step-card">
+        <div class="step-card reveal-right" style="transition-delay:.25s">
             <div class="step-num">3</div>
             <h3>Approval & Selesai</h3>
             <p>Admin memproses permohonan Anda. Pantau statusnya kapan saja lewat dashboard — dari Menunggu hingga Selesai.</p>
@@ -362,7 +290,7 @@
 
 <!-- CTA -->
 <section class="cta">
-    <div class="cta-box">
+    <div class="cta-box reveal-scale">
         <h2>Siap Ganti Buku Tulis dengan Klik?</h2>
         <p>Bergabung sekarang dan rasakan kemudahan peminjaman ruangan di sekolah Anda</p>
         @auth
@@ -380,10 +308,48 @@
 </footer>
 
 <script>
-    // Navbar shadow on scroll
+    // ========== NAVBAR SCROLL ==========
     window.addEventListener('scroll', function() {
         document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
     });
+
+    // ========== SCROLL REVEAL ==========
+    (function() {
+        var els = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+        if ('IntersectionObserver' in window) {
+            var obs = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12 });
+            els.forEach(function(el) { obs.observe(el); });
+        } else {
+            els.forEach(function(el) { el.classList.add('active'); });
+        }
+    })();
+
+    // ========== HERO GLOW PARALLAX ==========
+    (function() {
+        var hero = document.querySelector('.hero');
+        if (!hero) return;
+        var g1 = hero.querySelector('.hero-glow.g1');
+        var g2 = hero.querySelector('.hero-glow.g2');
+        var g3 = hero.querySelector('.hero-glow.g3');
+        hero.addEventListener('mousemove', function(e) {
+            var rect = hero.getBoundingClientRect();
+            var x = (e.clientX - rect.left) / rect.width - 0.5;
+            var y = (e.clientY - rect.top) / rect.height - 0.5;
+            if (g1) g1.style.transform = 'translate(' + (x * 30) + 'px,' + (y * 25) + 'px)';
+            if (g2) g2.style.transform = 'translate(' + (x * -22) + 'px,' + (y * -18) + 'px)';
+            if (g3) g3.style.transform = 'translate(' + (x * 15) + 'px,' + (y * 12) + 'px)';
+        });
+        hero.addEventListener('mouseleave', function() {
+            [g1, g2, g3].forEach(function(g) { if (g) g.style.transform = ''; });
+        });
+    })();
 </script>
 </body>
 </html>

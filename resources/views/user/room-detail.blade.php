@@ -25,7 +25,7 @@
         <div class="w-full px-6 sm:px-10 lg:px-16">
 
             <!-- Info Ruangan -->
-            <div class="aesthetic-card overflow-hidden mb-8 animate-fade-up">
+            <div class="aesthetic-card stat-card-shimmer overflow-hidden mb-8 animate-fade-up reveal">
                 @if($room->image)
                     <div class="h-64 overflow-hidden relative">
                         <img src="{{ asset('storage/' . $room->image) }}" alt="{{ $room->name }}" class="w-full h-full object-cover">
@@ -58,7 +58,7 @@
 
                     <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-2">
                         @if($room->location)
-                            <div class="flex items-center p-3 rounded-xl border" style="background: linear-gradient(135deg, #fef2f2, #fff1f2); border-color: #fecaca;">
+                            <div class="flex items-center p-3 rounded-xl border transition-all hover:shadow-md" style="background: linear-gradient(135deg, #fef2f2, #fff1f2); border-color: #fecaca;">
                                 <span class="w-9 h-9 rounded-xl inline-flex items-center justify-center mr-3 shadow-sm" style="background: linear-gradient(135deg, #ef4444, #f87171);">
                                     <i class="fas fa-location-dot text-white text-sm"></i>
                                 </span>
@@ -69,7 +69,7 @@
                             </div>
                         @endif
                         @if($room->capacity)
-                            <div class="flex items-center p-3 rounded-xl border" style="background: linear-gradient(135deg, #eff6ff, #f0f9ff); border-color: #bfdbfe;">
+                            <div class="flex items-center p-3 rounded-xl border transition-all hover:shadow-md" style="background: linear-gradient(135deg, #eff6ff, #f0f9ff); border-color: #bfdbfe;">
                                 <span class="w-9 h-9 rounded-xl inline-flex items-center justify-center mr-3 shadow-sm" style="background: linear-gradient(135deg, #3b82f6, #60a5fa);">
                                     <i class="fas fa-users text-white text-sm"></i>
                                 </span>
@@ -80,7 +80,7 @@
                             </div>
                         @endif
                         @if($room->type)
-                            <div class="flex items-center p-3 rounded-xl border" style="background: linear-gradient(135deg, #fdf4ff, #faf5ff); border-color: #f5d0fe;">
+                            <div class="flex items-center p-3 rounded-xl border transition-all hover:shadow-md" style="background: linear-gradient(135deg, #fdf4ff, #faf5ff); border-color: #f5d0fe;">
                                 <span class="w-9 h-9 rounded-xl inline-flex items-center justify-center mr-3 shadow-sm" style="background: linear-gradient(135deg, #d946ef, #e879f9);">
                                     <i class="fas fa-shapes text-white text-sm"></i>
                                 </span>
@@ -106,7 +106,7 @@
             </div>
 
             <!-- Jadwal Pelajaran per Hari -->
-            <div class="aesthetic-card mb-8 animate-fade-up-2 animate-fade-up">
+            <div class="aesthetic-card mb-8 animate-fade-up-2 animate-fade-up reveal">
                 <div class="p-6 flex items-center border-b border-gray-100">
                     <span class="w-9 h-9 rounded-xl inline-flex items-center justify-center mr-3" style="background: linear-gradient(135deg, #eef2ff, #f5f3ff);">
                         <i class="fas fa-calendar-week text-indigo-500"></i>
@@ -173,7 +173,7 @@
             </div>
 
             <!-- Booking yang Disetujui -->
-            <div class="aesthetic-card animate-fade-up-3 animate-fade-up">
+            <div class="aesthetic-card animate-fade-up-3 animate-fade-up reveal">
                 <div class="p-6 flex items-center border-b border-gray-100">
                     <span class="w-9 h-9 rounded-xl inline-flex items-center justify-center mr-3" style="background: linear-gradient(135deg, #ecfdf5, #d1fae5);">
                         <i class="fas fa-calendar-check text-emerald-500"></i>

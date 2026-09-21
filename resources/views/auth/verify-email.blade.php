@@ -28,7 +28,7 @@
 
 <div style="display:flex;flex-direction:column;gap:10px;text-align:center">
     <div class="form-footer" style="margin-top:0">
-        <a href="{{ route('profile.show') }}">Edit Profil</a>
+        <a href="{{ route('user.profile') }}">Edit Profil</a>
     </div>
     <div class="form-footer" style="margin-top:0">
         <form method="POST" action="{{ route('logout') }}" style="display:inline">

@@ -81,18 +81,35 @@
             <!-- User Dropdown -->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle d-flex align-items-center" data-toggle="dropdown" href="#" style="color: #374151; font-weight: 600;">
-                    <div style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #818cf8); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; margin-right: 8px;">
-                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                    </div>
+                    @if(Auth::user()->profile_photo_path)
+                        <img src="{{ url('storage/' . Auth::user()->profile_photo_path) }}?v={{ Auth::user()->updated_at?->timestamp }}"
+                             alt="{{ Auth::user()->name }}"
+                             style="width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 2px solid #e0e7ff; box-shadow: 0 2px 8px rgba(99,102,241,0.25); margin-right: 8px;">
+                    @else
+                        <div style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #818cf8); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; margin-right: 8px;">
+                            {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                        </div>
+                    @endif
                     <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.12); border: 1px solid #f3f4f6; padding: 8px;">
-                    <div style="padding: 8px 16px 12px; border-bottom: 1px solid #f3f4f6; margin-bottom: 4px;">
-                        <p style="font-weight: 700; color: #1f2937; margin: 0;">{{ Auth::user()->name }}</p>
-                        <small style="color: #9ca3af;">{{ Auth::user()->email }}</small>
+                    <div style="padding: 8px 16px 12px; border-bottom: 1px solid #f3f4f6; margin-bottom: 4px; display: flex; align-items: center; gap: 10px;">
+                        @if(Auth::user()->profile_photo_path)
+                            <img src="{{ url('storage/' . Auth::user()->profile_photo_path) }}?v={{ Auth::user()->updated_at?->timestamp }}"
+                                 alt="{{ Auth::user()->name }}"
+                                 style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #e0e7ff;">
+                        @else
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #818cf8); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; border: 2px solid #e0e7ff;">
+                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                            </div>
+                        @endif
+                        <div>
+                            <p style="font-weight: 700; color: #1f2937; margin: 0;">{{ Auth::user()->name }}</p>
+                            <small style="color: #9ca3af;">{{ Auth::user()->email }}</small>
+                        </div>
                     </div>
-                    <a href="{{ route('profile.show') }}" class="dropdown-item" style="border-radius: 8px; padding: 8px 16px; color: #374151;">
-                        <i class="fas fa-user mr-2" style="color: #6366f1;"></i> Profile
+                    <a href="{{ route('admin.profile') }}" class="dropdown-item" style="border-radius: 8px; padding: 8px 16px; color: #374151;">
+                        <i class="fas fa-user-cog mr-2" style="color: #6366f1;"></i> Profile
                     </a>
                     <a href="{{ route('dashboard') }}" class="dropdown-item" style="border-radius: 8px; padding: 8px 16px; color: #374151;">
                         <i class="fas fa-globe mr-2" style="color: #3b82f6;"></i> Lihat Website
@@ -115,9 +132,18 @@
         <div class="sidebar" style="background: transparent;">
             <!-- User Panel -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex" style="border-bottom: 1px solid rgba(255,255,255,0.15);">
+                @if(Auth::user()->profile_photo_path)
+                    <img src="{{ url('storage/' . Auth::user()->profile_photo_path) }}?v={{ Auth::user()->updated_at?->timestamp }}"
+                         alt="{{ Auth::user()->name }}"
+                         style="width: 36px; height: 36px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.4); margin-right: 10px;">
+                @else
+                    <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #818cf8, #a78bfa); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; margin-right: 10px; border: 2px solid rgba(255,255,255,0.4);">
+                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                    </div>
+                @endif
                 <div class="info">
-                    <a href="#" class="d-block" style="color: white; font-weight: 600;">
-                        <i class="fas fa-user-circle mr-1"></i> {{ Auth::user()->name }}
+                    <a href="{{ route('admin.profile') }}" class="d-block" style="color: white; font-weight: 600;">
+                        {{ Auth::user()->name }}
                     </a>
                     <small style="color: rgba(255,255,255,0.6);">Administrator</small>
                 </div>
@@ -207,6 +233,14 @@
 
                     <!-- Divider -->
                     <li class="nav-header">LAINNYA</li>
+
+                    <!-- Profil -->
+                    <li class="nav-item">
+                        <a href="{{ route('admin.profile') }}" class="nav-link {{ request()->routeIs('admin.profile*') ? 'active' : '' }}">
+                            <i class="nav-icon fas fa-user-cog"></i>
+                            <p>Profil Saya</p>
+                        </a>
+                    </li>
 
                     <!-- Lihat Website -->
                     <li class="nav-item">

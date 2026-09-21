@@ -16,16 +16,20 @@
 
     <div class="py-10">
         <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
-            <div class="aesthetic-card overflow-hidden animate-fade-up">
+            <div class="aesthetic-card stat-card-shimmer overflow-hidden animate-fade-up reveal">
 
                 <!-- Header Form -->
-                <div class="p-8 text-center" style="background: linear-gradient(120deg, #eef2ff, #f5f3ff);">
-                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-3 shadow-lg"
-                         style="background: linear-gradient(135deg, #6366f1, #8b5cf6); box-shadow: 0 10px 30px -8px rgba(99,102,241,0.5);">
-                        <i class="fas fa-calendar-plus text-white text-2xl"></i>
+                <div class="p-8 text-center relative overflow-hidden" style="background: linear-gradient(120deg, #eef2ff, #f5f3ff);">
+                    <div class="absolute -right-12 -top-12 w-40 h-40 rounded-full opacity-[0.07]" style="background: linear-gradient(135deg, #6366f1, #a855f7);"></div>
+                    <div class="absolute -left-8 -bottom-8 w-32 h-32 rounded-full opacity-[0.05]" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);"></div>
+                    <div class="relative z-10">
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-3 shadow-lg"
+                             style="background: linear-gradient(135deg, #6366f1, #8b5cf6); box-shadow: 0 10px 30px -8px rgba(99,102,241,0.5);">
+                            <i class="fas fa-calendar-plus text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800">Form Booking Ruangan</h3>
+                        <p class="text-gray-500 mt-1">Isi form di bawah untuk mengajukan peminjaman</p>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-800">Form Booking Ruangan</h3>
-                    <p class="text-gray-500 mt-1">Isi form di bawah untuk mengajukan peminjaman</p>
                 </div>
 
                 <div class="p-8">
@@ -73,7 +77,7 @@
                                 </span>
                                 Ruangan <span class="text-red-500">*</span>
                             </label>
-                            <select name="room_id" class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3" required>
+                            <select name="room_id" class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3 transition-all" required>
                                 <option value="">-- Pilih Ruangan --</option>
                                 @foreach($rooms as $room)
                                     <option value="{{ $room->id }}" {{ old('room_id') == $room->id ? 'selected' : '' }}>
@@ -96,7 +100,7 @@
                                 </span>
                                 Jenis Acara <span class="text-red-500">*</span>
                             </label>
-                            <select name="event_type" class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3" required>
+                            <select name="event_type" class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3 transition-all" required>
                                 <option value="">-- Pilih Jenis --</option>
                                 <option value="Pinjam" {{ old('event_type') === 'Pinjam' ? 'selected' : '' }}>📌 Pinjam</option>
                                 <option value="Acara Sekolah" {{ old('event_type') === 'Acara Sekolah' ? 'selected' : '' }}>🎉 Acara Sekolah</option>
@@ -117,7 +121,7 @@
                                 </span>
                                 Kegiatan
                             </label>
-                            <input type="text" name="description" class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3"
+                            <input type="text" name="description" class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3 transition-all"
                                    value="{{ old('description') }}" placeholder="Contoh: Maulid Nabi, Praktek Komputer">
                             @error('description')
                                 <p class="mt-2 text-sm text-red-600 flex items-center">
@@ -136,7 +140,7 @@
                                     Mulai <span class="text-red-500">*</span>
                                 </label>
                                 <input type="datetime-local" name="start_datetime"
-                                       class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3"
+                                       class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3 transition-all"
                                        value="{{ old('start_datetime') }}" required>
                                 @error('start_datetime')
                                     <p class="mt-2 text-sm text-red-600 flex items-center">
@@ -152,7 +156,7 @@
                                     Selesai <span class="text-red-500">*</span>
                                 </label>
                                 <input type="datetime-local" name="end_datetime"
-                                       class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3"
+                                       class="w-full border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-xl shadow-sm py-3 transition-all"
                                        value="{{ old('end_datetime') }}" required>
                                 @error('end_datetime')
                                     <p class="mt-2 text-sm text-red-600 flex items-center">
@@ -203,20 +207,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let checkTimeout = null;
 
-    // Fungsi untuk cek konflik jadwal kelas via AJAX
     function checkScheduleConflict() {
         const roomId = roomSelect.value;
         const startDatetime = startInput.value;
         const endDatetime = endInput.value;
 
-        // Validasi input lengkap
         if (!roomId || !startDatetime || !endDatetime) {
             conflictAlert.classList.add('hidden');
             submitBtn.disabled = false;
             return;
         }
 
-        // Debounce - tunggu 500ms setelah user berhenti mengetik
         clearTimeout(checkTimeout);
         checkTimeout = setTimeout(() => {
             fetch('{{ route("user.bookings.check-schedule") }}', {
@@ -235,7 +236,6 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.has_conflict) {
-                    // Tampilkan peringatan konflik
                     conflictMessage.innerHTML = `
                         <p class="mb-2">Waktu yang dipilih bentrok dengan jadwal kelas:</p>
                         <ul class="list-disc list-inside space-y-1">
@@ -249,7 +249,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     submitBtn.disabled = true;
                     submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
                 } else {
-                    // Tidak ada konflik
                     conflictAlert.classList.add('hidden');
                     submitBtn.disabled = false;
                     submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -264,12 +263,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 500);
     }
 
-    // Event listeners
     roomSelect.addEventListener('change', checkScheduleConflict);
     startInput.addEventListener('change', checkScheduleConflict);
     endInput.addEventListener('change', checkScheduleConflict);
 
-    // Cek saat halaman dimuat jika ada value lama
     if (roomSelect.value && startInput.value && endInput.value) {
         checkScheduleConflict();
     }

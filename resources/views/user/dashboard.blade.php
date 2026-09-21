@@ -27,7 +27,7 @@
             <!-- Stat Cards -->
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 mb-8">
                 <!-- Total Booking -->
-                <div class="aesthetic-card aesthetic-card-hover animate-fade-up-1 animate-fade-up p-6 relative overflow-hidden">
+                <div class="aesthetic-card aesthetic-card-hover stat-card-shimmer animate-fade-up animate-fade-up-1 p-6 relative overflow-hidden">
                     <div class="absolute -right-4 -top-4 w-24 h-24 rounded-full opacity-10" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);"></div>
                     <i class="fas fa-calendar-days absolute right-5 bottom-4 text-4xl opacity-5" style="color: #6366f1;"></i>
                     <div class="flex items-center relative z-10">
@@ -36,7 +36,7 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-500 font-medium">Total Booking</p>
-                            <p class="text-2xl font-extrabold" style="color: #4338ca;">{{ $stats['total'] }}</p>
+                            <p class="text-2xl font-extrabold" style="color: #4338ca;" data-count="{{ $stats['total'] }}">0</p>
                         </div>
                     </div>
                     <div class="mt-3 pt-3 border-t border-indigo-50 text-xs font-medium" style="color: #818cf8;">
@@ -45,7 +45,7 @@
                 </div>
 
                 <!-- Pending -->
-                <div class="aesthetic-card aesthetic-card-hover animate-fade-up-2 animate-fade-up p-6 relative overflow-hidden">
+                <div class="aesthetic-card aesthetic-card-hover stat-card-shimmer animate-fade-up animate-fade-up-2 p-6 relative overflow-hidden">
                     <div class="absolute -right-4 -top-4 w-24 h-24 rounded-full opacity-10" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);"></div>
                     <i class="fas fa-hourglass-half absolute right-5 bottom-4 text-4xl opacity-5" style="color: #f59e0b;"></i>
                     <div class="flex items-center relative z-10">
@@ -54,7 +54,7 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-500 font-medium">Menunggu</p>
-                            <p class="text-2xl font-extrabold" style="color: #b45309;">{{ $stats['pending'] }}</p>
+                            <p class="text-2xl font-extrabold" style="color: #b45309;" data-count="{{ $stats['pending'] }}">0</p>
                         </div>
                     </div>
                     <div class="mt-3 pt-3 border-t border-amber-50 text-xs font-medium" style="color: #f59e0b;">
@@ -63,7 +63,7 @@
                 </div>
 
                 <!-- Approved -->
-                <div class="aesthetic-card aesthetic-card-hover animate-fade-up-3 animate-fade-up p-6 relative overflow-hidden">
+                <div class="aesthetic-card aesthetic-card-hover stat-card-shimmer animate-fade-up animate-fade-up-3 p-6 relative overflow-hidden">
                     <div class="absolute -right-4 -top-4 w-24 h-24 rounded-full opacity-10" style="background: linear-gradient(135deg, #10b981, #34d399);"></div>
                     <i class="fas fa-badge-check absolute right-5 bottom-4 text-4xl opacity-5" style="color: #10b981;"></i>
                     <div class="flex items-center relative z-10">
@@ -72,7 +72,7 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-500 font-medium">Disetujui</p>
-                            <p class="text-2xl font-extrabold" style="color: #047857;">{{ $stats['approved'] }}</p>
+                            <p class="text-2xl font-extrabold" style="color: #047857;" data-count="{{ $stats['approved'] }}">0</p>
                         </div>
                     </div>
                     <div class="mt-3 pt-3 border-t border-emerald-50 text-xs font-medium" style="color: #10b981;">
@@ -81,7 +81,7 @@
                 </div>
 
                 <!-- Rejected -->
-                <div class="aesthetic-card aesthetic-card-hover animate-fade-up-4 animate-fade-up p-6 relative overflow-hidden">
+                <div class="aesthetic-card aesthetic-card-hover stat-card-shimmer animate-fade-up animate-fade-up-4 p-6 relative overflow-hidden">
                     <div class="absolute -right-4 -top-4 w-24 h-24 rounded-full opacity-10" style="background: linear-gradient(135deg, #ef4444, #f87171);"></div>
                     <i class="fas fa-circle-xmark absolute right-5 bottom-4 text-4xl opacity-5" style="color: #ef4444;"></i>
                     <div class="flex items-center relative z-10">
@@ -90,7 +90,7 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-500 font-medium">Ditolak</p>
-                            <p class="text-2xl font-extrabold" style="color: #b91c1c;">{{ $stats['rejected'] }}</p>
+                            <p class="text-2xl font-extrabold" style="color: #b91c1c;" data-count="{{ $stats['rejected'] }}">0</p>
                         </div>
                     </div>
                     <div class="mt-3 pt-3 border-t border-red-50 text-xs font-medium" style="color: #ef4444;">
@@ -100,7 +100,7 @@
             </div>
 
             <!-- Quick Actions -->
-            <div class="aesthetic-card animate-fade-up-3 animate-fade-up p-6 mb-8 relative overflow-hidden">
+            <div class="aesthetic-card animate-fade-up animate-fade-up-3 p-6 mb-8 relative overflow-hidden reveal">
                 <div class="absolute -right-10 -top-10 w-40 h-40 rounded-full opacity-[0.04]" style="background: linear-gradient(135deg, #6366f1, #ec4899);"></div>
                 <h3 class="text-lg font-bold text-gray-800 mb-5 flex items-center relative z-10">
                     <span class="w-10 h-10 rounded-xl mr-3 inline-flex items-center justify-center shadow-md" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
@@ -149,7 +149,7 @@
             </div>
 
             <!-- Recent Bookings -->
-            <div class="aesthetic-card animate-fade-up-4 animate-fade-up overflow-hidden">
+            <div class="aesthetic-card animate-fade-up animate-fade-up-4 overflow-hidden reveal">
                 <div class="p-6 flex items-center justify-between border-b border-gray-100">
                     <h3 class="text-lg font-bold text-gray-800 flex items-center">
                         <span class="w-10 h-10 rounded-xl mr-3 inline-flex items-center justify-center shadow-md" style="background: linear-gradient(135deg, #06b6d4, #22d3ee);">

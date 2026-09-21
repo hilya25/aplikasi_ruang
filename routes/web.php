@@ -12,6 +12,11 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 
+    // Profile (custom - bypass Jetstream Livewire)
+    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('user.profile');
+    Route::patch('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('user.profile.update');
+    Route::put('/profile/password', [\App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('user.password.update');
+
     // User Dashboard
     Route::get('/dashboard', [\App\Http\Controllers\UserController::class, 'dashboard'])->name('dashboard');
 
@@ -35,6 +40,11 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Profile Admin
+    Route::get('/profile', [\App\Http\Controllers\Admin\AdminProfileController::class, 'show'])->name('profile');
+    Route::patch('/profile', [\App\Http\Controllers\Admin\AdminProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [\App\Http\Controllers\Admin\AdminProfileController::class, 'updatePassword'])->name('password.update');
+
     // Dashboard
     Route::get('/dashboard', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'index'])->name('dashboard');
 

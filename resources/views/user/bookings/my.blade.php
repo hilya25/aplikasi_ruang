@@ -44,7 +44,7 @@
             @endif
 
             <!-- Bookings Card -->
-            <div class="aesthetic-card animate-fade-up">
+            <div class="aesthetic-card stat-card-shimmer animate-fade-up reveal">
                 <div class="p-6 flex items-center border-b border-gray-100">
                     <span class="w-10 h-10 rounded-xl inline-flex items-center justify-center mr-3 shadow-md" style="background: linear-gradient(135deg, #6366f1, #8b5cf6);">
                         <i class="fas fa-list-ul text-white"></i>
@@ -55,7 +55,7 @@
                     @if($bookings->count() > 0)
                         <div class="space-y-3">
                             @foreach($bookings as $booking)
-                            <div class="flex items-center justify-between p-4 rounded-xl border transition-all hover:shadow-md" style="border-color: #f1f5f9; background: #f8fafc;">
+                            <div class="flex items-center justify-between p-4 rounded-xl border transition-all hover:shadow-md aesthetic-card-hover" style="border-color: #f1f5f9; background: #f8fafc;">
                                 <div class="flex items-center">
                                     <div class="w-12 h-12 rounded-xl mr-4 flex-shrink-0 inline-flex items-center justify-center shadow-sm text-white
                                         @if($booking->room->type === 'Kelas') {{ 'bg-gradient-to-br from-blue-500 to-indigo-600' }}
@@ -86,6 +86,11 @@
                                             <span class="text-gray-300 mx-1">—</span>
                                             {{ \Carbon\Carbon::parse($booking->end_datetime)->format('H:i') }}
                                         </p>
+                                        @if($booking->event_type)
+                                            <p class="text-xs text-gray-400 mt-1 flex items-center">
+                                                <i class="fas fa-tag mr-1"></i> {{ $booking->event_type }}
+                                            </p>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="flex items-center space-x-3 ml-4">
@@ -119,8 +124,13 @@
                         </div>
                     @else
                         <div class="text-center py-16">
-                            <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-4" style="background: linear-gradient(135deg, #eef2ff, #f5f3ff);">
-                                <i class="fas fa-calendar-times text-indigo-300 text-3xl"></i>
+                            <div class="relative inline-block mb-4">
+                                <div class="w-20 h-20 rounded-3xl inline-flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg, #eef2ff, #f5f3ff);">
+                                    <i class="fas fa-calendar-times text-indigo-300 text-3xl"></i>
+                                </div>
+                                <span class="absolute -top-1 -right-1 w-7 h-7 rounded-full inline-flex items-center justify-center shadow-md" style="background: linear-gradient(135deg, #f59e0b, #fbbf24);">
+                                    <i class="fas fa-wand-magic-sparkles text-white text-xs"></i>
+                                </span>
                             </div>
                             <p class="text-gray-500 font-medium">Belum ada booking</p>
                             <p class="text-gray-400 text-sm mt-1 mb-5">Mulai booking ruangan pertama Anda.</p>

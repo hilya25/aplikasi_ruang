@@ -38,7 +38,7 @@
             @forelse($typeOrder as $type)
                 @if(isset($groupedRooms[$type]) && $groupedRooms[$type]->count() > 0)
                     <!-- Header Jenis Ruangan -->
-                    <div class="mb-6 flex items-center">
+                    <div class="mb-6 flex items-center reveal">
                         <span class="w-10 h-10 rounded-xl inline-flex items-center justify-center mr-3 shadow-md
                             @if($type === 'Kelas') bg-gradient-to-br from-blue-500 to-indigo-600
                             @elseif($type === 'Lab') bg-gradient-to-br from-purple-500 to-pink-600
@@ -66,7 +66,7 @@
                     <!-- Grid Ruangan -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                         @foreach($groupedRooms[$type] as $room)
-                        <div class="aesthetic-card aesthetic-card-hover overflow-hidden">
+                        <div class="aesthetic-card aesthetic-card-hover stat-card-shimmer overflow-hidden reveal">
                             <!-- Header Card with Image or Gradient by Type -->
                             @if($room->image)
                                 <div class="h-44 overflow-hidden relative">
@@ -151,7 +151,7 @@
                 @endif
             @empty
                 <!-- Jika tidak ada ruangan sama sekali -->
-                <div class="aesthetic-card">
+                <div class="aesthetic-card reveal">
                     <div class="text-center py-16">
                         <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-4" style="background: linear-gradient(135deg, #eef2ff, #f5f3ff);">
                             <i class="fas fa-door-closed text-indigo-300 text-3xl"></i>
@@ -167,7 +167,7 @@
             @endphp
             @if($otherTypes->count() > 0)
                 @foreach($otherTypes as $type => $typeRooms)
-                    <div class="mb-6 flex items-center">
+                    <div class="mb-6 flex items-center reveal">
                         <span class="w-10 h-10 rounded-xl inline-flex items-center justify-center mr-3 shadow-md bg-gradient-to-br from-gray-400 to-gray-500">
                             <i class="fas fa-door-open text-white"></i>
                         </span>
@@ -179,7 +179,7 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
                         @foreach($typeRooms as $room)
-                        <div class="aesthetic-card aesthetic-card-hover overflow-hidden">
+                        <div class="aesthetic-card aesthetic-card-hover stat-card-shimmer overflow-hidden reveal">
                             @if($room->image)
                                 <div class="h-44 overflow-hidden relative">
                                     <img src="{{ asset('storage/' . $room->image) }}" alt="{{ $room->name }}" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">

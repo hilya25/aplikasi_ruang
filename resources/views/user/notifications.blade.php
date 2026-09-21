@@ -42,7 +42,7 @@
             @endif
 
             <!-- Daftar Notifikasi -->
-            <div class="aesthetic-card animate-fade-up">
+            <div class="aesthetic-card stat-card-shimmer animate-fade-up reveal">
                 <div class="p-6 flex items-center border-b border-gray-100">
                     <span class="w-10 h-10 rounded-xl inline-flex items-center justify-center mr-3 shadow-md" style="background: linear-gradient(135deg, #06b6d4, #22d3ee);">
                         <i class="fas fa-inbox text-white"></i>
@@ -53,11 +53,11 @@
                     @if($notifications->count() > 0)
                         <div class="space-y-3">
                             @foreach($notifications as $notification)
-                            <div class="flex items-start justify-between p-4 rounded-xl transition-all {{ $notification->is_read ? 'hover:bg-gray-50' : '' }}"
+                            <div class="flex items-start justify-between p-4 rounded-xl transition-all {{ $notification->is_read ? 'hover:bg-gray-50' : 'hover:shadow-md' }}"
                                  style="{{ !$notification->is_read ? 'background: linear-gradient(135deg, #eef2ff, #f5f3ff); border: 1px solid #c7d2fe;' : 'border: 1px solid #f1f5f9;' }}">
                                 <div class="flex items-start">
                                     <!-- Icon by type -->
-                                    <div class="p-3 rounded-xl mr-4 flex-shrink-0
+                                    <div class="p-3 rounded-xl mr-4 flex-shrink-0 shadow-sm
                                         @if($notification->type === 'booking_approved') {{ 'bg-gradient-to-br from-green-100 to-emerald-100' }}
                                         @elseif($notification->type === 'booking_rejected') {{ 'bg-gradient-to-br from-red-100 to-rose-100' }}
                                         @else bg-gradient-to-br from-blue-100 to-indigo-100 @endif">
@@ -85,7 +85,7 @@
                                 @if(!$notification->is_read)
                                     <form method="POST" action="{{ route('user.notifications.read', $notification) }}">
                                         @csrf
-                                        <button type="submit" class="p-2 rounded-lg transition hover:bg-white hover:shadow-sm" style="color: #a5b4fc;" title="Tandai sudah dibaca">
+                                        <button type="submit" class="p-2 rounded-lg transition-all hover:bg-white hover:shadow-sm active:scale-95" style="color: #a5b4fc;" title="Tandai sudah dibaca">
                                             <i class="fas fa-check"></i>
                                         </button>
                                     </form>
@@ -95,8 +95,13 @@
                         </div>
                     @else
                         <div class="text-center py-16">
-                            <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-4" style="background: linear-gradient(135deg, #eef2ff, #f5f3ff);">
-                                <i class="fas fa-bell-slash text-indigo-300 text-3xl"></i>
+                            <div class="relative inline-block mb-4">
+                                <div class="w-20 h-20 rounded-3xl inline-flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg, #eef2ff, #f5f3ff);">
+                                    <i class="fas fa-bell-slash text-indigo-300 text-3xl"></i>
+                                </div>
+                                <span class="absolute -top-1 -right-1 w-7 h-7 rounded-full inline-flex items-center justify-center shadow-md" style="background: linear-gradient(135deg, #06b6d4, #22d3ee);">
+                                    <i class="fas fa-moon text-white text-xs"></i>
+                                </span>
                             </div>
                             <p class="text-gray-500 font-medium">Tidak ada notifikasi</p>
                             <p class="text-gray-400 text-sm mt-1">Notifikasi akan muncul di sini.</p>

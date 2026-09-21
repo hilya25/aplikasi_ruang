@@ -9,7 +9,8 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=plus+jakarta+sans:400,500,600,700,800&display=swap" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
         <!-- Tailwind CSS CDN (backup untuk utility classes) -->
         <script src="https://cdn.tailwindcss.com"></script>
@@ -32,7 +33,7 @@
 
             body {
                 background: #f6f7fb;
-                font-family: 'Figtree', ui-sans-serif, system-ui, sans-serif;
+                font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
             }
 
             /* ===== Decorative background blobs ===== */
@@ -48,12 +49,13 @@
                 content: '';
                 position: absolute;
                 border-radius: 9999px;
-                filter: blur(90px);
-                opacity: 0.35;
+                filter: blur(100px);
+                opacity: 0.3;
+                animation: blobDrift 12s ease-in-out infinite alternate;
             }
             .bg-decor::before {
-                width: 480px;
-                height: 480px;
+                width: 500px;
+                height: 500px;
                 top: -160px;
                 right: -120px;
                 background: radial-gradient(circle, #c7d2fe 0%, transparent 70%);
@@ -64,14 +66,41 @@
                 bottom: -200px;
                 left: -160px;
                 background: radial-gradient(circle, #ddd6fe 0%, transparent 70%);
+                animation-delay: 4s;
+                animation-direction: alternate-reverse;
+            }
+            @keyframes blobDrift {
+                0% { transform: translate(0, 0) scale(1); }
+                100% { transform: translate(20px, -15px) scale(1.06); }
+            }
+
+            /* ===== Floating particles ===== */
+            .bg-particles {
+                position: fixed;
+                inset: 0;
+                pointer-events: none;
+                overflow: hidden;
+                z-index: -1;
+            }
+            .bg-particle {
+                position: absolute;
+                border-radius: 50%;
+                opacity: 0;
+                animation: particleFloat linear infinite;
+            }
+            @keyframes particleFloat {
+                0% { transform: translateY(0) scale(1); opacity: 0; }
+                10% { opacity: 0.4; }
+                90% { opacity: 0.4; }
+                100% { transform: translateY(-100vh) scale(0.3); opacity: 0; }
             }
 
             /* ===== Page header ===== */
             .page-header {
                 position: relative;
-                background: linear-gradient(120deg, #4338ca 0%, #6366f1 45%, #8b5cf6 100%);
+                background: linear-gradient(120deg, #1e1b4b 0%, #312e81 30%, #4338ca 60%, #6366f1 100%);
                 border-radius: 0 0 2rem 2rem;
-                box-shadow: 0 20px 40px -18px rgba(79, 70, 229, 0.45);
+                box-shadow: 0 20px 50px -18px rgba(79, 70, 229, 0.5);
                 overflow: hidden;
             }
             .page-header::before {
@@ -79,26 +108,59 @@
                 position: absolute;
                 inset: 0;
                 background:
-                    radial-gradient(circle at 85% 20%, rgba(255,255,255,0.18) 0%, transparent 45%),
-                    radial-gradient(circle at 10% 90%, rgba(255,255,255,0.10) 0%, transparent 40%);
+                    radial-gradient(circle at 85% 20%, rgba(255,255,255,0.2) 0%, transparent 45%),
+                    radial-gradient(circle at 10% 90%, rgba(255,255,255,0.08) 0%, transparent 40%);
+                pointer-events: none;
+            }
+            .page-header::after {
+                content: '';
+                position: absolute;
+                width: 300px;
+                height: 300px;
+                border-radius: 50%;
+                background: rgba(139,92,246,0.15);
+                filter: blur(60px);
+                top: -100px;
+                right: 10%;
                 pointer-events: none;
             }
 
-            /* ===== Card aesthetic ===== */
+            /* ===== Card aesthetic — Glassmorphism ===== */
             .aesthetic-card {
-                background: rgba(255, 255, 255, 0.85);
-                backdrop-filter: blur(12px);
-                -webkit-backdrop-filter: blur(12px);
-                border: 1px solid rgba(255, 255, 255, 0.9);
-                box-shadow: 0 8px 30px -12px rgba(79, 70, 229, 0.14);
+                background: rgba(255, 255, 255, 0.78);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                border: 1px solid rgba(255, 255, 255, 0.85);
+                box-shadow: 0 8px 32px -12px rgba(79, 70, 229, 0.12), inset 0 1px 0 rgba(255,255,255,0.8);
                 border-radius: 1.25rem;
             }
             .aesthetic-card-hover {
-                transition: transform .25s ease, box-shadow .25s ease;
+                transition: transform .3s cubic-bezier(.22,.8,.35,1), box-shadow .3s ease;
             }
             .aesthetic-card-hover:hover {
-                transform: translateY(-4px);
-                box-shadow: 0 18px 40px -14px rgba(79, 70, 229, 0.28);
+                transform: translateY(-5px);
+                box-shadow: 0 20px 50px -14px rgba(79, 70, 229, 0.25), inset 0 1px 0 rgba(255,255,255,0.9);
+            }
+
+            /* ===== Stat card shimmer border ===== */
+            .stat-card-shimmer {
+                position: relative;
+                overflow: hidden;
+            }
+            .stat-card-shimmer::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+                animation: shimmerBorder 3s ease-in-out infinite;
+                pointer-events: none;
+            }
+            @keyframes shimmerBorder {
+                0% { left: -100%; }
+                100% { left: 200%; }
             }
 
             /* ===== Smooth scrollbar ===== */
@@ -117,15 +179,27 @@
                 to   { opacity: 1; transform: translateY(0); }
             }
             .animate-fade-up {
-                animation: fadeUp .5s ease both;
+                animation: fadeUp .5s cubic-bezier(.22,.8,.35,1) both;
             }
             .animate-fade-up-1 { animation-delay: .05s; }
             .animate-fade-up-2 { animation-delay: .12s; }
             .animate-fade-up-3 { animation-delay: .19s; }
             .animate-fade-up-4 { animation-delay: .26s; }
 
+            /* ===== Scroll Reveal ===== */
+            .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.22,.8,.35,1),transform .7s cubic-bezier(.22,.8,.35,1)}
+            .reveal.active{opacity:1;transform:translateY(0)}
+
             .header-text { color: white !important; }
             .header-text h2 { color: white !important; }
+
+            /* ===== Gradient text ===== */
+            .grad-text {
+                background: linear-gradient(135deg, #818cf8, #c084fc, #f0abfc);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
 
             /* ===== Navbar: nav link ===== */
             .nav-link {
@@ -250,6 +324,13 @@
     </head>
     <body class="font-sans antialiased" style="min-height: 100vh;">
         <div class="bg-decor"></div>
+        <div class="bg-particles" aria-hidden="true">
+            <span class="bg-particle" style="left:8%;bottom:-8px;background:#818cf8;width:4px;height:4px;animation-duration:18s;animation-delay:1s"></span>
+            <span class="bg-particle" style="left:25%;bottom:-8px;background:#c084fc;width:3px;height:3px;animation-duration:22s;animation-delay:5s"></span>
+            <span class="bg-particle" style="left:50%;bottom:-8px;background:#38bdf8;width:5px;height:5px;animation-duration:16s;animation-delay:3s"></span>
+            <span class="bg-particle" style="left:72%;bottom:-8px;background:#a5b4fc;width:3px;height:3px;animation-duration:24s;animation-delay:8s"></span>
+            <span class="bg-particle" style="left:90%;bottom:-8px;background:#f0abfc;width:4px;height:4px;animation-duration:17s;animation-delay:6s"></span>
+        </div>
 
         <x-banner />
 
@@ -274,7 +355,7 @@
 
             <!-- Footer -->
             <footer class="mt-12 py-6 text-center text-sm" style="color: #a5b4fc;">
-                <i class="fas fa-school mr-1.5"></i> {{ config('app.name', 'RoomBook') }} &copy; {{ date('Y') }} — Ruang yang tepat, waktu yang tepat.
+                <i class="fas fa-door-open mr-1.5"></i> SIPARU &copy; {{ date('Y') }} — Sistem Peminjaman Ruangan Sekolah
             </footer>
         </div>
 
@@ -283,5 +364,58 @@
         @livewireScripts
 
         @stack('scripts')
+
+        <script>
+            // Scroll Reveal
+            (function() {
+                var els = document.querySelectorAll('.reveal');
+                if ('IntersectionObserver' in window) {
+                    var obs = new IntersectionObserver(function(entries) {
+                        entries.forEach(function(entry) {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('active');
+                                obs.unobserve(entry.target);
+                            }
+                        });
+                    }, { threshold: 0.1 });
+                    els.forEach(function(el) { obs.observe(el); });
+                } else {
+                    els.forEach(function(el) { el.classList.add('active'); });
+                }
+            })();
+
+            // Counter Animation
+            (function() {
+                var counters = document.querySelectorAll('[data-count]');
+                if (!counters.length) return;
+                var animated = false;
+                function animateAll() {
+                    if (animated) return;
+                    animated = true;
+                    counters.forEach(function(el) {
+                        var target = parseInt(el.getAttribute('data-count'), 10);
+                        var duration = 1200;
+                        var start = performance.now();
+                        function tick(now) {
+                            var progress = Math.min((now - start) / duration, 1);
+                            var eased = 1 - Math.pow(1 - progress, 3);
+                            el.textContent = Math.round(eased * target);
+                            if (progress < 1) requestAnimationFrame(tick);
+                        }
+                        requestAnimationFrame(tick);
+                    });
+                }
+                if ('IntersectionObserver' in window) {
+                    var obs = new IntersectionObserver(function(entries) {
+                        entries.forEach(function(entry) {
+                            if (entry.isIntersecting) { animateAll(); obs.disconnect(); }
+                        });
+                    }, { threshold: 0.3 });
+                    counters.forEach(function(el) { obs.observe(el.closest('.aesthetic-card') || el); });
+                } else {
+                    animateAll();
+                }
+            })();
+        </script>
     </body>
 </html>

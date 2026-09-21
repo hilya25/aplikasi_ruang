@@ -11,13 +11,13 @@
                 <!-- Logo -->
                 <div class="flex items-center mr-8">
                     <a href="{{ route('dashboard') }}" class="flex items-center group" style="text-decoration: none;">
-                        <div class="w-9 h-9 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"
-                             style="background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.25); box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);">
-                            <i class="fas fa-school" style="color: white; font-size: 1.05rem;"></i>
+                        <div class="w-9 h-9 rounded-xl flex items-center justify-center font-extrabold text-white text-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6"
+                             style="background: linear-gradient(135deg, #6366f1, #a855f7); box-shadow: 0 6px 18px rgba(99,102,241,0.45); font-family: 'Plus Jakarta Sans', sans-serif;">
+                            S
                         </div>
                         <div class="ml-2.5 leading-none">
-                            <span style="color: white; font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em;">RoomBook</span>
-                            <div style="color: rgba(255,255,255,0.6); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; margin-top: 2px;">Booking Ruangan</div>
+                            <span style="color: white; font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em;">SIPARU</span>
+                            <div style="color: rgba(255,255,255,0.6); font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; margin-top: 2px;">Sistem Peminjaman Ruangan</div>
                         </div>
                     </a>
                 </div>
@@ -56,33 +56,35 @@
                 <div class="ms-3 relative">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
-                            @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                                <button class="flex text-sm border-2 border-white/40 rounded-full focus:outline-none focus:border-white transition hover:border-white">
-                                    <img class="h-9 w-9 rounded-full object-cover ring-2 ring-white/50" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
-                                </button>
-                            @else
-                                <span class="inline-flex rounded-md">
+                            <span class="inline-flex rounded-md">
                                     <button type="button" class="user-chip">
-                                        <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
+                                        @if (Laravel\Jetstream\Jetstream::managesProfilePhotos() && Auth::user()->profile_photo_path)
+                                            <img class="h-8 w-8 rounded-full object-cover ring-2 ring-white/50" src="{{ url('storage/' . Auth::user()->profile_photo_path) }}?v={{ Auth::user()->updated_at?->timestamp }}" alt="{{ Auth::user()->name }}" />
+                                        @else
+                                            <div class="user-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
+                                        @endif
                                         <span class="hidden md:inline">{{ Auth::user()->name }}</span>
                                         <svg class="ms-1.5 -me-0.5 h-3.5 w-3.5 opacity-70" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                                         </svg>
                                     </button>
                                 </span>
-                            @endif
                         </x-slot>
 
                         <x-slot name="content">
                             <div class="dropdown-profile">
-                                <div class="dropdown-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
+                                @if (Laravel\Jetstream\Jetstream::managesProfilePhotos() && Auth::user()->profile_photo_path)
+                                    <img class="h-10 w-10 rounded-full object-cover ring-2 ring-indigo-100" src="{{ url('storage/' . Auth::user()->profile_photo_path) }}?v={{ Auth::user()->updated_at?->timestamp }}" alt="{{ Auth::user()->name }}" />
+                                @else
+                                    <div class="dropdown-avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
+                                @endif
                                 <div>
                                     <p class="dropdown-name">{{ Auth::user()->name }}</p>
                                     <small class="dropdown-email">{{ Auth::user()->email }}</small>
                                 </div>
                             </div>
 
-                            <x-dropdown-link href="{{ route('profile.show') }}">
+                            <x-dropdown-link href="{{ route('user.profile') }}">
                                 <i class="fas fa-user-cog mr-2" style="color: #6366f1;"></i> {{ __('Profile') }}
                             </x-dropdown-link>
 
@@ -136,9 +138,13 @@
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t px-4 py-4" style="border-color: rgba(255,255,255,0.15);">
             <div class="flex items-center">
-                <div class="user-avatar" style="width: 42px; height: 42px; font-size: 1rem;">
-                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
-                </div>
+                @if (Laravel\Jetstream\Jetstream::managesProfilePhotos() && Auth::user()->profile_photo_path)
+                    <img class="h-10 w-10 rounded-full object-cover ring-2 ring-white/50" src="{{ url('storage/' . Auth::user()->profile_photo_path) }}?v={{ Auth::user()->updated_at?->timestamp }}" alt="{{ Auth::user()->name }}" />
+                @else
+                    <div class="user-avatar" style="width: 42px; height: 42px; font-size: 1rem;">
+                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                    </div>
+                @endif
                 <div class="ml-3">
                     <div class="font-semibold text-base" style="color: white;">{{ Auth::user()->name }}</div>
                     <div class="text-sm" style="color: rgba(255,255,255,0.65);">{{ Auth::user()->email }}</div>
@@ -146,7 +152,7 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <a href="{{ route('profile.show') }}" class="mobile-link">
+                <a href="{{ route('user.profile') }}" class="mobile-link">
                     <i class="fas fa-user-cog w-5 mr-2.5 text-center"></i> Profile
                 </a>
 
