@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout pageTitle="Ruangan">
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
             <div>

@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout pageTitle="Booking Ruangan">
     <x-slot name="header">
         <div>
             <p class="text-indigo-200 text-sm font-medium mb-1 flex items-center">

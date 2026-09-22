@@ -33,14 +33,14 @@
 
             <!-- Profile Photo & Info Card -->
             <div style="background: white; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); overflow: hidden; margin-bottom: 24px;">
-                <div style="padding: 1rem 1.5rem; background: linear-gradient(135deg, #eef2ff, #e0e7ff); border-bottom: 1px solid #e5e7eb; display: flex; align-items: center;">
-                    <span style="width: 40px; height: 40px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; background: linear-gradient(135deg, #6366f1, #818cf8); color: white; box-shadow: 0 4px 12px rgba(99,102,241,0.3);">
-                        <i class="fas fa-user-pen"></i>
-                    </span>
-                    <div>
+                <div style="padding: 1rem 1.5rem; background: linear-gradient(135deg, #eef2ff, #e0e7ff); border-bottom: 1px solid #e5e7eb;">
+                    <div style="display: flex; align-items: center;">
+                        <span style="width: 40px; height: 40px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; background: linear-gradient(135deg, #6366f1, #818cf8); color: white; box-shadow: 0 4px 12px rgba(99,102,241,0.3);">
+                            <i class="fas fa-user-pen"></i>
+                        </span>
                         <h3 class="card-title mb-0" style="font-weight: 700; font-size: 1.05rem; color: #1f2937;">Informasi Profil</h3>
-                        <small style="color: #9ca3af;">Perbarui foto dan informasi akun Anda</small>
                     </div>
+                    <small style="color: #9ca3af; display: block; margin-top: 6px; margin-left: 52px;">Perbarui foto dan informasi akun Anda</small>
                 </div>
                 <div class="card-body" style="padding: 1.5rem;">
                     <form method="POST" action="{{ route('admin.profile.update') }}" enctype="multipart/form-data" id="profileForm">
@@ -139,14 +139,14 @@
 
             <!-- Change Password Card -->
             <div style="background: white; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); overflow: hidden;">
-                <div style="padding: 1rem 1.5rem; background: linear-gradient(135deg, #fffbeb, #fef3c7); border-bottom: 1px solid #fde68a; display: flex; align-items: center;">
-                    <span style="width: 40px; height: 40px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; background: linear-gradient(135deg, #f59e0b, #fbbf24); color: white; box-shadow: 0 4px 12px rgba(245,158,11,0.3);">
-                        <i class="fas fa-lock"></i>
-                    </span>
-                    <div>
+                <div style="padding: 1rem 1.5rem; background: linear-gradient(135deg, #fffbeb, #fef3c7); border-bottom: 1px solid #fde68a;">
+                    <div style="display: flex; align-items: center;">
+                        <span style="width: 40px; height: 40px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; background: linear-gradient(135deg, #f59e0b, #fbbf24); color: white; box-shadow: 0 4px 12px rgba(245,158,11,0.3);">
+                            <i class="fas fa-lock"></i>
+                        </span>
                         <h3 class="card-title mb-0" style="font-weight: 700; font-size: 1.05rem; color: #1f2937;">Ubah Password</h3>
-                        <small style="color: #9ca3af;">Pastikan password Anda kuat dan aman</small>
                     </div>
+                    <small style="color: #9ca3af; display: block; margin-top: 6px; margin-left: 52px;">Pastikan password Anda kuat dan aman</small>
                 </div>
                 <div class="card-body" style="padding: 1.5rem;">
                     <form method="POST" action="{{ route('admin.password.update') }}">

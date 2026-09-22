@@ -7,11 +7,18 @@ use Illuminate\View\View;
 
 class AppLayout extends Component
 {
+    public string $pageTitle;
+
+    public function __construct(string $pageTitle = 'Dashboard')
+    {
+        $this->pageTitle = $pageTitle;
+    }
+
     /**
      * Get the view / contents that represents the component.
      */
     public function render(): View
     {
-        return view('layouts.app');
+        return view('layouts.app', ['pageTitle' => $this->pageTitle]);
     }
 }
